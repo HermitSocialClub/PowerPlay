@@ -1,2 +1,2 @@
 # PowerPlay
-Play with power
+Play with Power
