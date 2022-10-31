@@ -49,7 +49,7 @@ public class Meet0Tele extends LinearOpMode {
 
         while (opModeIsActive()){
 
-            x = gamepad1.left_stick_x * 1.1;
+            x = gamepad1.left_stick_x * 1;
             y = -gamepad1.left_stick_y;
             rx = gamepad1.right_stick_x;
 

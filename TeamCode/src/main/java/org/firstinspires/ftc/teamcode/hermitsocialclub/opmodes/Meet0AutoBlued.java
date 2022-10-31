@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous (name = "Meet0Auto")
+@Autonomous (name = "Meet0AutoBlue")
 public class Meet0AutoBlued extends LinearOpMode {
 
     public DcMotor right_drive = null;
@@ -46,7 +46,7 @@ public class Meet0AutoBlued extends LinearOpMode {
 
         waitForStart();
 
-        strafeToPosition(24,0.3);
+        strafeToPosition(24,0.2);
 
     }
     public void strafeToPosition(double inches, double speed) {
