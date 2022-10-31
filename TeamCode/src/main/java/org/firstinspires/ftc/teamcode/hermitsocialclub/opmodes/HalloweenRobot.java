@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.robotcontroller.internal;
+package org.firstinspires.ftc.teamcode.hermitsocialclub.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -91,7 +91,15 @@ public class HalloweenRobot extends LinearOpMode {
             //spinnyPower = gamepad1.dpad_up;
 
             if (gamepad1.dpad_up){
-                spinny_thing.setPower(0.5);
+                spinny_thing.setPower(0.4);
+            }
+
+            if (gamepad1.dpad_left){
+                spinny_thing.setPower(0.25);
+            }
+
+            if (gamepad1.dpad_right){
+                spinny_thing.setPower(0.3);
             }
 
             if (gamepad1.dpad_down){
