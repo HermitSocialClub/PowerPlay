@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.trajectorysequence;
+package org.firstinspires.ftc.teamcode.hermitsocialclub.trajectorysequence;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -19,10 +19,10 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAcceleration
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.acmerobotics.roadrunner.util.Angle;
 
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.trajectorysequence.sequencesegment.SequenceSegment;
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.trajectorysequence.sequencesegment.TrajectorySegment;
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.trajectorysequence.sequencesegment.TurnSegment;
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.trajectorysequence.sequencesegment.WaitSegment;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.trajectorysequence.sequencesegment.SequenceSegment;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.trajectorysequence.sequencesegment.TrajectorySegment;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.trajectorysequence.sequencesegment.TurnSegment;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.trajectorysequence.sequencesegment.WaitSegment;
 
 import java.util.ArrayList;
 import java.util.Collections;

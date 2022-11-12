@@ -1,5 +1,4 @@
-package org.firstinspires.ftc.teamcode.hermitsocialclub.util;
-
+package org.firstinspires.ftc.teamcode.util;
 
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
