@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode;
+package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.compautos;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.SampleMecanumDrive;
 
@@ -13,21 +13,21 @@ import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.SampleMecanumDrive;
 public class LocationOneBlueAuto extends LinearOpMode {
 
     public DcMotor linears;
-    public Servo intakeThing;
+    public CRServo intakeThing;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         linears = hardwareMap.get(DcMotor.class,"linears");
-        intakeThing = hardwareMap.get(Servo.class,"intakeThing");
+        intakeThing = hardwareMap.get(CRServo.class,"intakeThing");
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Trajectory myTrajectory = drive.trajectoryBuilder(new Pose2d())
+        Trajectory t1 = drive.trajectoryBuilder(new Pose2d())
                 .forward(20)
                 .addDisplacementMarker(() -> {
                     linearsMove(0.2,1);
-                    intakeThing.setPosition(1);
+                    intakeMove(-0.9,1);
                 })
                 .strafeRight(40)
                 .build();
@@ -36,7 +36,7 @@ public class LocationOneBlueAuto extends LinearOpMode {
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(myTrajectory);
+        drive.followTrajectory(t1);
     }
 
     public void linearsMove (double speed, double time){
@@ -51,7 +51,7 @@ public class LocationOneBlueAuto extends LinearOpMode {
         double start = System.currentTimeMillis();
         double end = start + time * 1000;
         while (System.currentTimeMillis() < end) {
-            intakeThing.setPosition(speed);
+            intakeThing.setPower(speed);
         }
     }
 }

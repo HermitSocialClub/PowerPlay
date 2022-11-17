@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.hermitsocialclub.drive;
 
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.DIRECTIONS;
 import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.MAX_ACCEL;
 import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.MAX_ANG_ACCEL;
 import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.MAX_ANG_VEL;
@@ -33,6 +34,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -140,7 +142,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
-
+        setMotorDirections(DIRECTIONS);
         // TODO: if desired, use setLocalizer() to change the localization method
          setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
 
@@ -225,6 +227,16 @@ public class SampleMecanumDrive extends MecanumDrive {
         for (DcMotorEx motor : motors) {
             motor.setMode(runMode);
         }
+    }
+
+    public void setMotorDirections (DcMotorSimple.Direction[] directions){
+
+        int i = 0;
+        for (DcMotorSimple.Direction direction : directions) {
+            motors.get(i).setDirection(direction);
+            i++;
+        }
+
     }
 
     public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior) {

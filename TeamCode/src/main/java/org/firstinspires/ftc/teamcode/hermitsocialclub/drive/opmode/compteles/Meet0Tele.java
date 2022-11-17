@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode;
+package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.compteles;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;

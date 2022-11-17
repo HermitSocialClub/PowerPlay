@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.hermitsocialclub.drive;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 /*
@@ -23,7 +24,7 @@ public class DriveConstants {
      * These are motor constants that should be listed online for your motors.
      */
     public static final double TICKS_PER_REV = 537.6;
-    public static final double MAX_RPM = 340;
+    public static final double MAX_RPM = 349;
 
     /*
      * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
@@ -87,10 +88,13 @@ public class DriveConstants {
      * You are free to raise this on your own if you would like. It is best determined through experimentation.
 
      */
-    public static double MAX_VEL = 60.52801845916335;
+    public static double MAX_VEL = 16;
     public static double MAX_ACCEL = 60.52801845916335;
     public static double MAX_ANG_VEL = Math.toRadians(277.44);
     public static double MAX_ANG_ACCEL = Math.toRadians(277.44);
+
+    public static DcMotorSimple.Direction[] DIRECTIONS = new DcMotorSimple.Direction[]{DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD,
+            DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.REVERSE};
 
 
     public static double encoderTicksToInches(double ticks) {
