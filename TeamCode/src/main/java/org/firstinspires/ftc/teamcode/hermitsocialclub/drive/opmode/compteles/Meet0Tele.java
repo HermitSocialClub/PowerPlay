@@ -27,6 +27,7 @@ public class Meet0Tele extends LinearOpMode {
     double y;
     double x;
     double rx;
+    double x2;
   //  double linearExtenderPower;
     //double linearFlipperPower;
     boolean yesClaw;
@@ -57,14 +58,16 @@ public class Meet0Tele extends LinearOpMode {
         while (opModeIsActive()){
 
             x = gamepad1.left_stick_x * 1;
+            x2 = gamepad1.left_stick_x * 1.5;
             y = -gamepad1.left_stick_y;
             rx = gamepad1.right_stick_x;
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            driveRightPower = (y-x-rx) / denominator;
+            double denominator2 = Math.max(Math.abs(y) + Math.abs(x2) + Math.abs(rx), 1);
+            driveRightPower = (y-x2-rx) / denominator2;
             driveRight2Power = (y+x-rx) / denominator;
             driveLeftPower = (y+x+rx) / denominator;
-            driveLeft2Power = (y-x+rx) / denominator;
+            driveLeft2Power = (y-x2+rx) / denominator2;
 
             right_drive_2.setPower(driveRight2Power);
             right_drive.setPower(driveRightPower);

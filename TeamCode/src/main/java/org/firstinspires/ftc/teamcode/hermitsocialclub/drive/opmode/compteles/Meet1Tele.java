@@ -85,7 +85,7 @@ public class Meet1Tele extends LinearOpMode {
             } else if (gamepad2.b) {
                 claw.setPosition(0);
             } else if (gamepad2.x) {
-                claw.setPosition(0.5);
+                claw.setPosition(0.65);
             }
 
        /*     if (gamepad2.a) {

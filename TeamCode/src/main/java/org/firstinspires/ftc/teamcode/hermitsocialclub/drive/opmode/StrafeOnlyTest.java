@@ -44,6 +44,17 @@ public class StrafeOnlyTest extends LinearOpMode {
             drive.update();
 
 
+
+        telemetry.addData(" Left front", left_drive.getCurrentPosition());
+        telemetry.addData(" Left back", left_drive_2.getCurrentPosition());
+
+        telemetry.addData(" Right front", right_drive.getCurrentPosition());
+        telemetry.addData(" Right back", right_drive_2.getCurrentPosition());
+
+        telemetry.update();
+
+
         }
     }
 }
+
