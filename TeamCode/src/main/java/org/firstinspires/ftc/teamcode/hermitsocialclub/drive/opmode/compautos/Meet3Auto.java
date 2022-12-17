@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.hermitsocialclub.apriltags.AprilTagDetectionPipeline;
@@ -19,8 +20,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous (name = "Meet2Auto")
-public class Meet2Auto extends LinearOpMode {
+@Autonomous (name = "Meet3Auto")
+public class Meet3Auto extends LinearOpMode {
 
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -34,6 +35,8 @@ public class Meet2Auto extends LinearOpMode {
     public Servo claw = null;
     public org.firstinspires.ftc.teamcode.util.Encoder leftEncoder;
     public org.firstinspires.ftc.teamcode.util.Encoder frontEncoder;
+
+    private ElapsedTime linearTime;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -70,7 +73,7 @@ public class Meet2Auto extends LinearOpMode {
     AprilTagDetection tagOfInterest = null;
 
     //Key Positions Blue
-    Pose2d toFirstCone = new Pose2d(-35,65,Math.toRadians(0));
+    Pose2d toFirstCone = new Pose2d(-37,65,Math.toRadians(0));
 //    Pose2d toFirstCone2 = new Pose2d(-15,62,-90);
 
     Trajectory partOne;
@@ -89,6 +92,7 @@ public class Meet2Auto extends LinearOpMode {
         leftEncoder = new org.firstinspires.ftc.teamcode.util.Encoder(hardwareMap.get(DcMotorEx.class,"leftEncoder"));
         frontEncoder = new org.firstinspires.ftc.teamcode.util.Encoder(hardwareMap.get(DcMotorEx.class,"frontEncoder"));
 
+        linearTime = new ElapsedTime();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -223,8 +227,21 @@ public class Meet2Auto extends LinearOpMode {
                 .build();
 
         Trajectory t2 = drive.trajectoryBuilder(new Pose2d(-15, 12, Math.toRadians(180)))
-                        .forward(21.5)
-                                .build();
+                .forward(25.25)
+//                .addDisplacementMarker(() -> {
+//                    drive.linears.setPower(-0.55);
+//                    drive.linears.setTargetPosition(drive.linears.getCurrentPosition()
+//                            -3500);
+//                    drive.linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                })
+                .addDisplacementMarker(()->{
+                    linearsToTime(0.7,0.73);
+                })
+                .forward(25)
+                .addDisplacementMarker(()-> {
+                    drive.claw.setPosition(1);
+                })
+                .build();
 
         Trajectory t3 = drive.trajectoryBuilder(new Pose2d(-21, 7, Math.toRadians(230)))
                 .splineToLinearHeading(new Pose2d(-15, 12, Math.toRadians(230)), Math.toRadians(230))
@@ -232,6 +249,33 @@ public class Meet2Auto extends LinearOpMode {
                     drive.linears.setPower(0);
                 })
                         .build();
+
+        Trajectory t4 = drive.trajectoryBuilder(t2.end())
+                .addDisplacementMarker(()->{
+                    drive.linears.setTargetPosition(drive.linears.getCurrentPosition()
+                            + 4000);
+                    drive.linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.linears.setPower(.55);
+                })
+                .back(53.5)
+//                .addDisplacementMarker(() -> {
+//                    drive.linears.setTargetPosition(drive.linears.getCurrentPosition()
+//                            +1500);
+//                    drive.linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    drive.linears.setPower(.55);
+//                })
+                .build();
+
+        Trajectory t5 = drive.trajectoryBuilder(t4.end())
+                .splineToLinearHeading(new Pose2d(-21, 7, Math.toRadians(230)),Math.toRadians(230))
+                .addDisplacementMarker(()-> {
+                    drive.linears.setTargetPosition(drive.linears.getCurrentPosition()
+                    -500);
+                        })
+                .addDisplacementMarker(()->{
+                    drive.linears.setPower(0);
+                })
+                .build();
 
         Trajectory tmiddle = drive.trajectoryBuilder(t2.end()).strafeRight(24).build();
 
@@ -250,14 +294,28 @@ public class Meet2Auto extends LinearOpMode {
 
         if(isStopRequested()) return;
 
+        getRuntime();
+
         drive.followTrajectory(myTrajectory);
         drive.followTrajectory(t3);
-//        drive.turn(Math.toRadians(50));
-//        drive.followTrajectory(t2);
+      //  drive.turn(Math.toRadians(50));
+        //drive.linears.setTargetPosition(50);
+      //  linearsToTime(0.6,0.3);
+        //drive.linears.setPower(0.5);
+        drive.followTrajectory(t2);
+        //linearsToTime(0.1,0.1);
+       // drive.claw.setPosition(1);
+        //wait(500);
+    //    wait(500);
+        drive.followTrajectory(t4);
+       // drive.turn(Math.toRadians(-50));
+        drive.followTrajectory(t5);
+       // drive.claw.setPosition(0);
+
 
 
         /* Actually do something useful */
-        if(tagOfInterest == null || tagOfInterest.id == LEFT) {
+     /*   if(tagOfInterest == null || tagOfInterest.id == LEFT) {
 
           //  drive.followTrajectory(tmiddle);
 //            drive.followTrajectory(tfront);
@@ -275,14 +333,15 @@ public class Meet2Auto extends LinearOpMode {
             //drive.followTrajectory(tbackstrafe);
            // drive.turn(Math.toRadians(90));
            // drive.followTrajectory(tbacktwo);
-
+*/
 
             telemetry.addData("tag of interest right",tagOfInterest.id);
+            resetRuntime();
         }
 
         /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
         // while (opModeIsActive()) {sleep(20);}
-    }
+    //}
 
     void tagToTelemetry(AprilTagDetection detection)
     {
@@ -294,7 +353,14 @@ public class Meet2Auto extends LinearOpMode {
         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
+    public void linearsToTime (double timeout, double speed){
+        linearTime.reset();
+        while (linearTime.seconds() < timeout){
+            drive.linears.setPower(speed);
+        }
+        drive.linears.setPower(0);
 
+    }
 
 }
 
