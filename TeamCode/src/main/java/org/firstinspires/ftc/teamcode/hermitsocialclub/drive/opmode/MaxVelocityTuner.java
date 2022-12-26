@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.noOdometryMecanum;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
 
 import java.util.Objects;
 
@@ -35,7 +35,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        noOdometryMecanum drive = new noOdometryMecanum(hardwareMap);
+        bigWheelOdoMecanum drive = new bigWheelOdoMecanum(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -67,7 +67,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
         drive.setDrivePower(new Pose2d());
 
-        double effectiveKf = DriveConstants.getMotorVelocityF(veloInchesToTicks(maxVelocity));
+        double effectiveKf = bigwheelododriveconstants.getMotorVelocityF(veloInchesToTicks(maxVelocity));
 
         telemetry.addData("Max Velocity", maxVelocity);
         telemetry.addData("Voltage Compensated kF", effectiveKf * batteryVoltageSensor.getVoltage() / 12);
@@ -77,6 +77,6 @@ public class MaxVelocityTuner extends LinearOpMode {
     }
 
     private double veloInchesToTicks(double inchesPerSec) {
-        return inchesPerSec / (2 * Math.PI * DriveConstants.WHEEL_RADIUS) / DriveConstants.GEAR_RATIO * DriveConstants.TICKS_PER_REV;
+        return inchesPerSec / (2 * Math.PI * bigwheelododriveconstants.WHEEL_RADIUS) / bigwheelododriveconstants.GEAR_RATIO * bigwheelododriveconstants.TICKS_PER_REV;
     }
 }

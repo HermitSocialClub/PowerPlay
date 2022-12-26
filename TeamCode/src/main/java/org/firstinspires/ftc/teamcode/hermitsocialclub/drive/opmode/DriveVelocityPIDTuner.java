@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.kV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.noOdometryMecanum;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
 
 import java.util.List;
 
@@ -47,6 +47,7 @@ import java.util.List;
  * user to reset the position of the bot in the event that it drifts off the path.
  * Pressing B/O (Xbox/PS4) will cede control back to the tuning process.
  */
+//@TODO Next Time Tuning Use Correct Drive and DriveConstants in Imports
 @Config
 @Autonomous(group = "drive")
 public class DriveVelocityPIDTuner extends LinearOpMode {
@@ -73,7 +74,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
        // SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        noOdometryMecanum drive = new noOdometryMecanum(hardwareMap);
+        bigWheelOdoMecanum drive = new bigWheelOdoMecanum(hardwareMap);
 
         Mode mode = Mode.TUNING_MODE;
 

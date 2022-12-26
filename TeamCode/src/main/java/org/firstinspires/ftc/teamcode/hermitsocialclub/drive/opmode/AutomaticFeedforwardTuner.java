@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.MAX_RPM;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.DriveConstants.rpmToVelocity;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MAX_RPM;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.rpmToVelocity;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
 import org.firstinspires.ftc.teamcode.util.LoggingUtil;
 import org.firstinspires.ftc.teamcode.util.RegressionUtil;
 
@@ -46,7 +46,7 @@ public class AutomaticFeedforwardTuner extends LinearOpMode {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        bigWheelOdoMecanum drive = new bigWheelOdoMecanum(hardwareMap);
 
         NanoClock clock = NanoClock.system();
 
