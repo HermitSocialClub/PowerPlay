@@ -49,7 +49,7 @@ public class bigwheelododriveconstants {
      */
     public static double WHEEL_RADIUS = 3; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 15.89; //13.5; // in
+    public static double TRACK_WIDTH = 11.65;//15.89; //13.5; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -57,9 +57,9 @@ public class bigwheelododriveconstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.0069; // rpmToVelocity(MAX_RPM);
-    public static double kA = .0006;
-    public static double kStatic = 0.078;
+    public static double kV = 0.0079; // rpmToVelocity(MAX_RPM);
+    public static double kA = 0.00205;
+    public static double kStatic = 0.087;
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -91,7 +91,7 @@ public class bigwheelododriveconstants {
      */
     public static double MAX_VEL = 38    ; //30.264009229581674;//16;
     public static double MAX_ACCEL = 38;//30.264009229581674;//60.52801845916335;
-    public static double MAX_ANG_VEL = Math.toRadians(431.6);//(138.72);
+    public static double MAX_ANG_VEL = Math.toRadians(472.9495911950398);//(431.6);//(138.72);
     public static double MAX_ANG_ACCEL = Math.toRadians(360);//(138.72);
 
     public static DcMotorSimple.Direction[] DIRECTIONS = new DcMotorSimple.Direction[]{DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD,
