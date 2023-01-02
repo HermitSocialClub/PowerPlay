@@ -25,7 +25,7 @@ public class StrafeTest extends LinearOpMode {
         bigWheelOdoMecanum drive = new bigWheelOdoMecanum(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
-                .strafeRight(DISTANCE)
+                .strafeLeft(DISTANCE)
                 .build();
 
         waitForStart();

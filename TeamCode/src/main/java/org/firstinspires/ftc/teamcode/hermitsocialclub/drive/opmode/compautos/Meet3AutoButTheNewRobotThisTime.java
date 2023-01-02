@@ -186,19 +186,31 @@ public class Meet3AutoButTheNewRobotThisTime extends LinearOpMode {
 
 // put the stuff that does the stuff before parking here
         drive.setPoseEstimate(toFirstCone);
-        drive.claw.setPosition(1);
+        //drive.claw.setPosition(1);
         drive.linears.setTargetPosition(drive.linears.getCurrentPosition() - 20);
         drive.linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive.linears.setPower(0.5);
         drive.linears.setTargetPosition(drive.linears.getCurrentPosition() + 20);
         Trajectory arcToFirstCone = drive.trajectoryBuilder(toFirstCone)
-                .splineToConstantHeading(new Vector2d(-13,50), Math.toRadians(270))
+                .splineToConstantHeading(new Vector2d(-12,65),Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-11.50,50), Math.toRadians(270))
+                .splineToConstantHeading(new Vector2d(-12,20),Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-44,10), Math.toRadians(180))
                 .addDisplacementMarker(30, () -> {
                     drive.linears.setTargetPosition(drive.linears.getCurrentPosition()
                             + 4300);
                     drive.linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     drive.linears.setPower(.55);
 
+                })
+                .addDisplacementMarker(() -> {
+                    int x = drive.linears.getCurrentPosition();
+                    drive.linears.setTargetPosition(drive.linears.getCurrentPosition()
+                            - 500);
+                })
+                .addDisplacementMarker(() -> {
+                    drive.claw.setPosition(0.65);
+                    //drive.linears.setPower(0);
                 })
 //                .strafeRight(10)
 //                .forward(15)
@@ -221,11 +233,11 @@ public class Meet3AutoButTheNewRobotThisTime extends LinearOpMode {
                 })
                 .build();
 
-        Trajectory toConeStackButStraight = drive.trajectoryBuilder(arcAfterStraightToFirstJunction.end())
+        Trajectory toConeStackButStraight = drive.trajectoryBuilder(new Pose2d(arcAfterStraightToFirstJunction.end().vec(),Math.toRadians(180)))
                 .lineToConstantHeading(new Vector2d(-60,12))
                 .build();
 
-        Trajectory reversedToConeStackButStraight = drive.trajectoryBuilder(toConeStackButStraight.end(),true)
+        Trajectory reversedToConeStackButStraight = drive.trajectoryBuilder(toConeStackButStraight.start(),true)
                 .lineToConstantHeading(new Vector2d(-60,12))
                         .build();
 
@@ -248,11 +260,13 @@ public class Meet3AutoButTheNewRobotThisTime extends LinearOpMode {
         waitForStart();
         if(isStopRequested()) return;
 
+        drive.claw.setPosition(0);
         drive.followTrajectory(arcToFirstCone);
-        drive.followTrajectory(straightToFirstJunction);
-        drive.followTrajectory(arcAfterStraightToFirstJunction); //1
-//        drive.turn(90);
-//        drive.followTrajectory(toConeStackButStraight); //2
+//        drive.followTrajectory(straightToFirstJunction);
+//        drive.followTrajectory(arcAfterStraightToFirstJunction); //1
+        //drive.turn(Math.toRadians(-95));
+        drive.followTrajectory(toConeStackButStraight); //2
+        drive.claw.setPosition(0);
 //        drive.followTrajectory(reversedToConeStackButStraight); //2
 //        drive.turn(-90); //2
 //        drive.followTrajectory(toConeStackButStraight); //3
