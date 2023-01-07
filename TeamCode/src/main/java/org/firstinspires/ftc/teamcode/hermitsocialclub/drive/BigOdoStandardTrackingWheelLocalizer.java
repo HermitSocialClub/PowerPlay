@@ -32,12 +32,12 @@ public class BigOdoStandardTrackingWheelLocalizer extends ThreeTrackingWheelLoca
     public static double WHEEL_RADIUS = 1; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = -8.545264854922; //8.75; // in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = -1.5; // in; offset of the lateral wheel
+    public static double LATERAL_DISTANCE = 8.545264854922; //8.75; // in; distance between the left and right wheels
+    public static double FORWARD_OFFSET = -1.375; // in; offset of the lateral wheel
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
-    public static double X_MULTIPLIER = 1.162115049; //1.1984116723897806122422375510251;//1.1; // Multiplier in the X direction
+    public static double X_MULTIPLIER = 1.1789434231942163742767495919684; //1.1984116723897806122422375510251;//1.1; // Multiplier in the X direction
     public static double Y_MULTIPLIER = 1.172556299; //1.3744240831501428399787453475807;//1.20537; // Multiplier in the Y direction
 
     public BigOdoStandardTrackingWheelLocalizer(HardwareMap hardwareMap) {
@@ -52,9 +52,9 @@ public class BigOdoStandardTrackingWheelLocalizer extends ThreeTrackingWheelLoca
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontEncoder"));
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
-        leftEncoder.setDirection(Encoder.Direction.REVERSE);
+        leftEncoder.setDirection(Encoder.Direction.FORWARD);
         frontEncoder.setDirection(Encoder.Direction.FORWARD);
-        rightEncoder.setDirection(Encoder.Direction.FORWARD);
+        rightEncoder.setDirection(Encoder.Direction.REVERSE);
     }
 
     public static double encoderTicksToInches(double ticks) {

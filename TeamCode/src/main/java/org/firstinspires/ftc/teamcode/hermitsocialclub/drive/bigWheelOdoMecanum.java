@@ -32,12 +32,12 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAcceleration
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -55,8 +55,8 @@ import java.util.List;
  */
 @Config
 public class bigWheelOdoMecanum extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(1.5, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(5 , 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(2.5, 0, 1.5);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(5 , 0, 1);
 
     public static double LATERAL_MULTIPLIER = 1.55;
 
@@ -71,8 +71,14 @@ public class bigWheelOdoMecanum extends MecanumDrive {
 
     private TrajectoryFollower follower;
 
+    enum   LinearState {
+        UP, DOWN, OFF
+    }
+    LinearState linearState = LinearState.OFF;
+    int targetDist = 0;
+
     public DcMotorEx leftFront, leftRear, rightRear, rightFront, linears;
-    public Servo claw;
+    public CRServo claw;
     private List<DcMotorEx> motors;
 
     private BNO055IMU imu;
@@ -126,7 +132,9 @@ public class bigWheelOdoMecanum extends MecanumDrive {
         rightRear = hardwareMap.get(DcMotorEx.class, "right_drive_2");
         rightFront = hardwareMap.get(DcMotorEx.class, "right_drive");
         linears = hardwareMap.get(DcMotorEx.class, "linear");
-        claw = hardwareMap.get(Servo.class,"claw");
+        claw = hardwareMap.get(CRServo.class,"claw");
+
+        linears.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -215,6 +223,27 @@ public class bigWheelOdoMecanum extends MecanumDrive {
     }
 
     public void update() {
+        switch (linearState){
+            case UP: {
+                if (linears.getCurrentPosition() < targetDist){}
+                else {
+                    linears.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    linears.setPower(.05);
+                    linearState = LinearState.OFF;
+                }
+                break;
+            }
+            case DOWN: {
+                if (linears.getCurrentPosition() > targetDist){}
+                else {
+                    linears.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    linears.setPower(.05);
+                    linearState = LinearState.OFF;
+                }
+                break;
+            }
+            case OFF: break;
+        }
         updatePoseEstimate();
         DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
         if (signal != null) setDriveSignal(signal);
@@ -327,5 +356,22 @@ public class bigWheelOdoMecanum extends MecanumDrive {
 
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
+    }
+    public void linearsMoveUp (int distance, double speed){
+        linears.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        int initposition = linears.getCurrentPosition();
+        targetDist = initposition + distance;
+        linears.setTargetPosition(targetDist);
+        linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearState = LinearState.UP;
+    }
+
+    public void linearsMoveDown (int distance, double speed) {
+        linears.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        int initposition = linears.getCurrentPosition();
+        targetDist = initposition-distance;
+        linears.setTargetPosition(targetDist);
+        linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearState = LinearState.DOWN;
     }
 }

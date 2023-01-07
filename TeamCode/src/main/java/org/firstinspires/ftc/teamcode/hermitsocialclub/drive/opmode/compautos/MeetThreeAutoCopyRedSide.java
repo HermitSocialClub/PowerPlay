@@ -17,8 +17,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous (name = "Meet3AutoCopy")
-public class Meet3AutoCopy extends LinearOpMode {
+@Autonomous (name = "Meet3AutoCopyRedSide")
+public class MeetThreeAutoCopyRedSide extends LinearOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -59,6 +59,7 @@ public class Meet3AutoCopy extends LinearOpMode {
     AprilTagDetection tagOfInterest = null;
 
     //Key Positions Blue
+
 //    Pose2d toFirstCone2 = new Pose2d(-15,62,-90);
 
     Trajectory partOne;
@@ -158,41 +159,50 @@ public class Meet3AutoCopy extends LinearOpMode {
         }
 
 
-        Pose2d ToFirstCone = new Pose2d(35, 63, Math.toRadians(-90));
+        Pose2d ToFirstCone = new Pose2d(35, -63, Math.toRadians(90));
         drive.linears.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        int initposition = drive.linears.getCurrentPosition();
+        //int initposition = drive.linears.getCurrentPosition();
         drive.setPoseEstimate(ToFirstCone);
 
 
         Trajectory traj1 = drive.trajectoryBuilder(ToFirstCone)
-                .splineTo(new Vector2d(35, 26), Math.toRadians(-90))
-                .splineToSplineHeading(new Pose2d(40, 5, Math.toRadians(-50)), Math.toRadians(-90))
+                .splineTo(new Vector2d(35, -26), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(41, -4, Math.toRadians(50)), Math.toRadians(90))
                 .addDisplacementMarker(15, () -> {
-                    //linearsMoveUp(4300,0.5);
-                    drive.linears.setTargetPosition(initposition + 4300);
-//                    drive.linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    drive.linears.setPower(.5);
+                    //drive.linearsMoveUp(4300,0.5);
+                    drive.linearsMoveUp(4300,.5);
                 })
                 .addDisplacementMarker(17,() -> {
-                    drive.linears.setTargetPosition(initposition - 500);
-                    drive.linears.setPower(-0.5);
-                    //linearsMoveDown(500,0.5);
+                    drive.linearsMoveDown(500,.5);
+                    //drive.linearsMoveDown(500,0.5);
                 })
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPower(0.4);
+                    drive.claw.setPower(-1);
                     drive.linears.setPower(0.05);
                     //drive.linears.setPower(0);
                 })
                 .build();
-        Trajectory traj2 = drive.trajectoryBuilder(new Pose2d(traj1.end().vec(), Math.toRadians(-50)), Math.toRadians(160))
-                .splineToSplineHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(180))
-                .splineToSplineHeading(new Pose2d(8, 14.5, Math.toRadians(180)), Math.toRadians(180))
+        Trajectory traj2 = drive.trajectoryBuilder(new Pose2d(traj1.end().vec(), Math.toRadians(50)), Math.toRadians(160))
+                .addDisplacementMarker(() -> {
+                    drive.linearsMoveUp(500, .5);
+                })
+                .splineToSplineHeading(new Pose2d(20, -14, Math.toRadians(180)), Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(8, -11.5, Math.toRadians(180)), Math.toRadians(180))
+                .addDisplacementMarker(() -> {
+                    drive.claw.setPower(1);
+                })
                 .build();
         Trajectory traj3 = drive.trajectoryBuilder(traj2.end(), Math.toRadians(0))
-                .splineToSplineHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(350))
+                .splineToSplineHeading(new Pose2d(20, -14, Math.toRadians(180)), Math.toRadians(350))
+                .addDisplacementMarker(()->{
+                    drive.linearsMoveUp(1000,.5);
+                })
                 // .splineToSplineHeading(traj2.start(),Math.toRadians(340))
                 //      .forward(1.5)
-                .splineToSplineHeading(new Pose2d(40, 8, Math.toRadians(-50)), Math.toRadians(160))
+                .splineToSplineHeading(new Pose2d(40, -8, Math.toRadians(50)), Math.toRadians(160))
+                .addDisplacementMarker(()->{
+                    drive.claw.setPower(-1);
+                })
                 .build();
 
         Trajectory traj4 = drive.trajectoryBuilder(traj3.end())
@@ -200,15 +210,15 @@ public class Meet3AutoCopy extends LinearOpMode {
                 .build();
 
         Trajectory middlePark = drive.trajectoryBuilder(traj3.end())
-                .splineToSplineHeading(new Pose2d(35,13,Math.toRadians(-90)),Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(35,-13,Math.toRadians(90)),Math.toRadians(90))
                 .build();
 
         Trajectory frontPark = drive.trajectoryBuilder(middlePark.end())
-                .splineToConstantHeading(new Vector2d(60,10),Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(60,-10),Math.toRadians(0))
                 .build();
 
         Trajectory bottomPark = drive.trajectoryBuilder(middlePark.end())
-                .splineToConstantHeading(new Vector2d(15,10),Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(15,-10),Math.toRadians(0))
                 .build();
 
 //    Trajectory myTrajectory=drive.trajectoryBuilder(new Pose2d())
@@ -220,7 +230,7 @@ public class Meet3AutoCopy extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        drive.claw.setPower(-1);
+        drive.claw.setPower(1);
         drive.followTrajectory(traj1);
         // drive.turn(Math.toRadians(180));
         drive.followTrajectory(traj2);
@@ -263,31 +273,6 @@ public class Meet3AutoCopy extends LinearOpMode {
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
 
-//    void linearsMoveUp (int distance, double speed){
-//
-//        //drive.linears.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//       // int initposition = drive.linears.getCurrentPosition();
-//
-//        while (drive.linears.getCurrentPosition() < (drive.linears.getCurrentPosition()+distance)) {
-//            drive.linears.setTargetPosition(drive.linears.getCurrentPosition() + distance);
-//            drive.linears.setPower(speed);
-//        }
-//
-//        drive.linears.setPower(0.05);
-//    }
-//
-//    void linearsMoveDown (int distance, double speed) {
-//
-//        //drive.linears.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//       // int initposition = drive.linears.getCurrentPosition();
-//
-//        while (drive.linears.getCurrentPosition() > (drive.linears.getCurrentPosition()-distance)) {
-//            drive.linears.setTargetPosition(drive.linears.getCurrentPosition() - distance);
-//            drive.linears.setPower(speed);
-//        }
-//
-//        drive.linears.setPower(0.05);
-//
-//    }
+
 
 }

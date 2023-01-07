@@ -31,7 +31,7 @@ public class Meet2Auto extends LinearOpMode {
 //    public DcMotor left_drive_2 = null;
     public SampleMecanumDrive drive;
 //    public DcMotor linear = null;
-    public Servo claw = null;
+    public Servo claws;
     public org.firstinspires.ftc.teamcode.util.Encoder leftEncoder;
     public org.firstinspires.ftc.teamcode.util.Encoder frontEncoder;
 
@@ -88,7 +88,8 @@ public class Meet2Auto extends LinearOpMode {
         drive = new SampleMecanumDrive(hardwareMap);
         leftEncoder = new org.firstinspires.ftc.teamcode.util.Encoder(hardwareMap.get(DcMotorEx.class,"leftEncoder"));
         frontEncoder = new org.firstinspires.ftc.teamcode.util.Encoder(hardwareMap.get(DcMotorEx.class,"frontEncoder"));
-
+        //claw = new org.firstinspires.ftc.teamcode.util.Encoder(hardwareMap.get(Servo.class,"claw"));
+        claws = hardwareMap.get(Servo.class,"claw");
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -195,7 +196,7 @@ public class Meet2Auto extends LinearOpMode {
 
 // put the stuff that does the stuff before parking here
         drive.setPoseEstimate(toFirstCone);
-        drive.claw.setPosition(1);
+        claws.setPosition(1);
         drive.linears.setTargetPosition(drive.linears.getCurrentPosition() - 20);
         drive.linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive.linears.setPower(0.5);
@@ -215,7 +216,7 @@ public class Meet2Auto extends LinearOpMode {
                             - 500);
                 })
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPosition(0);
+                    claws.setPosition(0);
                     //drive.linears.setPower(0);
                 })
 //                .strafeRight(10)

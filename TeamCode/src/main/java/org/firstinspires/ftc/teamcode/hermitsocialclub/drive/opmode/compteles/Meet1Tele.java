@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.compteles;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.SampleMecanumDrive;
@@ -21,7 +21,7 @@ public class Meet1Tele extends LinearOpMode {
     double linearPower;
     boolean yesClaw;
     double clawPosition;
-    public Servo claw;
+    public CRServo claw;
 
     ElapsedTime runtime = new ElapsedTime();
     private boolean lastAMash = false;
@@ -44,7 +44,7 @@ public class Meet1Tele extends LinearOpMode {
         linear = hardwareMap.get(DcMotor.class,"linear");
         linear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
        // intake = hardwareMap.get(CRServo.class,"intake");
-        claw = hardwareMap.get(Servo.class,"claw");
+        claw = hardwareMap.get(CRServo.class,"claw");
 
         waitForStart();
         if (isStopRequested()) return;
@@ -56,12 +56,14 @@ public class Meet1Tele extends LinearOpMode {
                 if (precisionMode) {
                     precisionMode = false;
                     precisionModifier = 0.9;
-                    telemetry.addLine("Precision Mode DEACTIVATED!");
+                    // telemetry.addLine("Precision Mode DEACTIVATED!");
+                    telemetry.speak("Precision Mode DEACTIVATED");
 
                 } else {
                     precisionMode = true;
                     precisionModifier = 0.4;
-                    telemetry.addLine("Precision Mode ACTIVATED!");
+                    //telemetry.addLine("Precision Mode ACTIVATED!");
+                    telemetry.speak("Precision Mode ACTIVATED");
 
                 }
                 runtime.reset();
@@ -111,10 +113,18 @@ public class Meet1Tele extends LinearOpMode {
 //            }
 
             if (gamepad2.left_bumper){
-                claw.setPosition(0);
+                claw.setPower(-1);
+                //claw.setPosition(0);
+            } else if (gamepad2.right_bumper) {
+                claw.setPower(0.4);
+               // claw.setPosition(0.7);
             } else {
-                claw.setPosition(0.7 );
+                claw.setPower(0);
             }
+
+          //  claw.setPower(gamepad2.left_stick_x);
+
+
 
        /*     if (gamepad2.a) {
                 intake.setPower(1);

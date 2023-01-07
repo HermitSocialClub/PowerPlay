@@ -199,7 +199,7 @@ public class Meet3Auto extends LinearOpMode {
 
 // put the stuff that does the stuff before parking here
         drive.setPoseEstimate(toFirstCone);
-        drive.claw.setPosition(1);
+        claw.setPosition(1);
         drive.linears.setTargetPosition(drive.linears.getCurrentPosition() - 20);
         drive.linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         drive.linears.setPower(0.5);
@@ -219,7 +219,7 @@ public class Meet3Auto extends LinearOpMode {
                             - 500);
                 })
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPosition(0);
+                    claw.setPosition(0);
                     //drive.linears.setPower(0);
                 })
 //                .strafeRight(10)
@@ -239,7 +239,7 @@ public class Meet3Auto extends LinearOpMode {
                 })
                 .forward(25)
                 .addDisplacementMarker(()-> {
-                    drive.claw.setPosition(1);
+                    claw.setPosition(1);
                 })
                 .build();
 

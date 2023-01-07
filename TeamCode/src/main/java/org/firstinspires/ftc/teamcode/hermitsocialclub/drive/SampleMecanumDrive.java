@@ -37,7 +37,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -72,7 +71,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private TrajectoryFollower follower;
 
     public DcMotorEx leftFront, leftRear, rightRear, rightFront, linears;
-    public Servo claw;
+    //public Servo claw;
     private List<DcMotorEx> motors;
 
     private BNO055IMU imu;
@@ -126,7 +125,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightRear = hardwareMap.get(DcMotorEx.class, "right_drive_2");
         rightFront = hardwareMap.get(DcMotorEx.class, "right_drive");
         linears = hardwareMap.get(DcMotorEx.class, "linear");
-        claw = hardwareMap.get(Servo.class,"claw");
+       // claw = hardwareMap.get(Servo.class,"claw");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
