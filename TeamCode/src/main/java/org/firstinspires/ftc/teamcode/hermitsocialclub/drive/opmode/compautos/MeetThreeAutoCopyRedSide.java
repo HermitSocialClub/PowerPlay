@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.hermitsocialclub.apriltags.AprilTagDetectionPipeline;
@@ -23,6 +24,8 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
     public bigWheelOdoMecanum drive;
+
+    private ElapsedTime linearTime;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -160,20 +163,22 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
 
 
         Pose2d ToFirstCone = new Pose2d(35, -63, Math.toRadians(90));
+        Pose2d ToFirstConeStrafe = new Pose2d(35,-63,Math.toRadians(0));
+        Pose2d ToFirstConeBack = new Pose2d(35, -60, Math.toRadians(-90));
         drive.linears.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //int initposition = drive.linears.getCurrentPosition();
-        drive.setPoseEstimate(ToFirstCone);
+        drive.setPoseEstimate(ToFirstConeBack);
 
 
-        Trajectory traj1 = drive.trajectoryBuilder(ToFirstCone)
+        Trajectory traj1 = drive.trajectoryBuilder(ToFirstCone, Math.toRadians(90))
                 .splineTo(new Vector2d(35, -26), Math.toRadians(90))
-                .splineToSplineHeading(new Pose2d(41, -4, Math.toRadians(50)), Math.toRadians(90))
-                .addDisplacementMarker(15, () -> {
+                .splineToSplineHeading(new Pose2d(40, -4, Math.toRadians(50)), Math.toRadians(90))
+                .addDisplacementMarker(5, () -> {
                     //drive.linearsMoveUp(4300,0.5);
-                    drive.linearsMoveUp(4300,.5);
+                    drive.linearsMoveUp(1300,.5);
                 })
-                .addDisplacementMarker(17,() -> {
-                    drive.linearsMoveDown(500,.5);
+                .addDisplacementMarker(13,() -> {
+                    drive.linearsMoveDown(1000,.5);
                     //drive.linearsMoveDown(500,0.5);
                 })
                 .addDisplacementMarker(() -> {
@@ -182,9 +187,49 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
                     //drive.linears.setPower(0);
                 })
                 .build();
+
+        Trajectory traj1butstrafe = drive.trajectoryBuilder(ToFirstConeStrafe, Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(35,-20,Math.toRadians(0)),Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(40,-4,Math.toRadians(50)),Math.toRadians(50))
+                .addDisplacementMarker(10, () -> {
+                    //drive.linearsMoveUp(4300,0.5);
+                    drive.linearsMoveUp(4300,.5);
+                })
+                .addDisplacementMarker(17,() -> {
+                    drive.linearsMoveDown(1000,.5);
+                    //drive.linearsMoveDown(500,0.5);
+                })
+                .addDisplacementMarker(() -> {
+                    drive.claw.setPower(-1);
+                    drive.linears.setPower(0.05);
+                    //drive.linears.setPower(0);
+                })
+                .build();
+
+        Trajectory traj1butbackfirst = drive.trajectoryBuilder(ToFirstConeBack, Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(35,-33,Math.toRadians(-90)),Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(35,-23,Math.toRadians(0)),Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(42,-4,Math.toRadians(50)),Math.toRadians(50))
+                .addDisplacementMarker(5, () -> {
+                    //drive.linearsMoveUp(4300,0.5);
+                    drive.linearsMoveUp(8300,.5);
+
+                })
+                .addDisplacementMarker(20,() -> {
+                   // drive.linearsMoveDown(1000,.5);
+                    drive.linearsMoveDown(500,0.5);
+
+                })
+                .addDisplacementMarker(() -> {
+                    drive.claw.setPower(-1);
+                    drive.linears.setPower(0.05);
+                    //drive.linears.setPower(0);
+                })
+                .build();
+
         Trajectory traj2 = drive.trajectoryBuilder(new Pose2d(traj1.end().vec(), Math.toRadians(50)), Math.toRadians(160))
                 .addDisplacementMarker(() -> {
-                    drive.linearsMoveUp(500, .5);
+                    drive.linearsMoveDown(500, .5);
                 })
                 .splineToSplineHeading(new Pose2d(20, -14, Math.toRadians(180)), Math.toRadians(180))
                 .splineToSplineHeading(new Pose2d(8, -11.5, Math.toRadians(180)), Math.toRadians(180))
@@ -229,34 +274,38 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
         waitForStart();
 
         if (isStopRequested()) return;
-
+        resetRuntime();
         drive.claw.setPower(1);
-        drive.followTrajectory(traj1);
+        while (getRuntime() < .500){}
+        drive.followTrajectory(traj1butbackfirst);
+
+       // drive.followTrajectory(traj1butstrafe);
+        //drive.followTrajectory(traj1);
         // drive.turn(Math.toRadians(180));
-        drive.followTrajectory(traj2);
-        drive.followTrajectory(traj3);
+//        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj3);
         // drive.followTrajectory(traj4);
         // drive.turn(Math.toRadians(190));
-        drive.followTrajectory(traj2);
-        drive.followTrajectory(traj3);
+//        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj3);
     /*drive.followTrajectory(myTrajectory);
     drive.turn(Math.toRadians(80));*/
 
         if (tagOfInterest == null || tagOfInterest.id == LEFT) {
 
-            drive.followTrajectory(middlePark);
-            drive.followTrajectory(frontPark);
+//            drive.followTrajectory(middlePark);
+//            drive.followTrajectory(frontPark);
             telemetry.addData("tag null or left", tagOfInterest.id);
 
         } else if (tagOfInterest.id == MIDDLE) {
 
-            drive.followTrajectory(middlePark);
+//            drive.followTrajectory(middlePark);
             telemetry.addData("tag middle", tagOfInterest.id);
 
         } else {
 
-            drive.followTrajectory(middlePark);
-            drive.followTrajectory(bottomPark);
+//            drive.followTrajectory(middlePark);
+//            drive.followTrajectory(bottomPark);
             telemetry.addData("tag of interest right", tagOfInterest.id);
 
         }
@@ -273,6 +322,13 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
 
-
+//    public void linearsToTime (double timeout, double speed){
+//        linearTime.reset();
+//        while (linearTime.seconds() < timeout){
+//            drive.linears.setPower(speed);
+//        }
+//        drive.linears.setPower(0);
+//
+//    }
 
 }

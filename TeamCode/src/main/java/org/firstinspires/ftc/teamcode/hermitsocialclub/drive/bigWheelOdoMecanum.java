@@ -363,6 +363,7 @@ public class bigWheelOdoMecanum extends MecanumDrive {
         targetDist = initposition + distance;
         linears.setTargetPosition(targetDist);
         linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linears.setPower(speed);
         linearState = LinearState.UP;
     }
 
@@ -372,6 +373,7 @@ public class bigWheelOdoMecanum extends MecanumDrive {
         targetDist = initposition-distance;
         linears.setTargetPosition(targetDist);
         linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linears.setPower(-speed);
         linearState = LinearState.DOWN;
     }
 }
