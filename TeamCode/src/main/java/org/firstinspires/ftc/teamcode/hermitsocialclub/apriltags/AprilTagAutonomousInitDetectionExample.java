@@ -205,15 +205,15 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
 
         /* Actually do something useful */
         if(tagOfInterest == null || tagOfInterest.id == LEFT) {
-            forwardToPosition(8,0.25);
-            strafeToPosition(-14,0.25);
+            forwardToPosition(-9,0.25);
+            strafeToPosition(-16,0.25);
             telemetry.addData("tag null or left", tagOfInterest.id);
         }else if(tagOfInterest.id == MIDDLE){
             strafeToPosition(-14,0.25);
             telemetry.addData("tag middle",tagOfInterest.id);
         }else{
-            forwardToPosition(-9,0.25);
-            strafeToPosition(-16,0.25);
+            forwardToPosition(8,0.25);
+            strafeToPosition(-14,0.25);
             telemetry.addData("tag of interest right",tagOfInterest.id);
         }
 

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
 
 @TeleOp (name = "MotorEncoderTest" )
 public class MotorEncoderTest extends LinearOpMode {
@@ -13,7 +13,7 @@ public class MotorEncoderTest extends LinearOpMode {
     public DcMotor left_drive_2 = null;
     public DcMotor right_drive = null;
     public DcMotor right_drive_2 = null;
-    SampleMecanumDrive drive;
+    bigWheelOdoMecanum drive;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -21,7 +21,7 @@ public class MotorEncoderTest extends LinearOpMode {
         left_drive_2 = hardwareMap.get(DcMotor.class,"left_drive_2");
         right_drive = hardwareMap.get(DcMotor.class,"right_drive");
         right_drive_2 = hardwareMap.get(DcMotor.class,"right_drive_2");
-        drive = new SampleMecanumDrive(hardwareMap);
+        drive = new bigWheelOdoMecanum(hardwareMap);
 
 
         waitForStart();

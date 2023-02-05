@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
 
 
 @TeleOp (name = "Meet1Tele", group = "Pushbot")
@@ -17,7 +17,7 @@ public class Meet1Tele extends LinearOpMode {
 
 
     //HardwareMap hwMap           =  new HardwareMap();
-    SampleMecanumDrive drive;
+    bigWheelOdoMecanum drive;
     double linearPower;
     boolean yesClaw;
     double clawPosition;
@@ -30,7 +30,7 @@ public class Meet1Tele extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        drive = new SampleMecanumDrive(hardwareMap);
+        drive = new bigWheelOdoMecanum(hardwareMap);
 //        right_drive = hardwareMap.get(DcMotor.class,"right_drive");
 //        right_drive.setDirection(DcMotorSimple.Direction.REVERSE);
 //        right_drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -90,7 +90,7 @@ public class Meet1Tele extends LinearOpMode {
 
 
             if (Math.abs(linearPower) < (0.05)){
-                linear.setPower(0.05);
+                linear.setPower(0.005);
             }
             else {
                 linear.setPower(-linearPower);

@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.kA;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.kStatic;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.kV;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.kV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;

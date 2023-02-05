@@ -1,17 +1,17 @@
 package org.firstinspires.ftc.teamcode.hermitsocialclub.drive;
 
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.DIRECTIONS;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.kA;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.kStatic;
-import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigwheelododriveconstants.kV;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.DIRECTIONS;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.ILTBotDriveConstants.kV;
 
 import androidx.annotation.NonNull;
 
@@ -55,10 +55,10 @@ import java.util.List;
  */
 @Config
 public class bigWheelOdoMecanum extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(2.5, 0, 1.5);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(5 , 0, 1);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0,0,0);//(2.5, 0, 1.5);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0,0,0);//(5 , 0, 1);
 
-    public static double LATERAL_MULTIPLIER = 1.55;
+    public static double LATERAL_MULTIPLIER = 1;//1.55;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
