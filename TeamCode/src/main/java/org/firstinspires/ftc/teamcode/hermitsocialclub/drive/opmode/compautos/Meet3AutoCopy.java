@@ -179,7 +179,7 @@ public class Meet3AutoCopy extends LinearOpMode {
                     //linearsMoveDown(500,0.5);
                 })
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPower(0.4);
+                    drive.claw.setPosition(0.4);
                     drive.linears.setPower(0.05);
                     //drive.linears.setPower(0);
                 })
@@ -220,7 +220,7 @@ public class Meet3AutoCopy extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        drive.claw.setPower(-1);
+        drive.claw.setPosition(-1);
         drive.followTrajectory(traj1);
         // drive.turn(Math.toRadians(180));
         drive.followTrajectory(traj2);

@@ -36,7 +36,7 @@ public class ILTBotDriveConstants {
      */
     public static final boolean RUN_USING_ENCODER = true;
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
-            getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
+            12.9);//getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
 
     /*
      * These are physical constants that can be determined from your robot (including the track
@@ -102,11 +102,12 @@ public class ILTBotDriveConstants {
      */
     public static double MAX_VEL = 60;
     public static double MAX_ACCEL = 60;
-    public static double MAX_ANG_VEL = Math.toRadians(286.4788975654116);
-    public static double MAX_ANG_ACCEL = Math.toRadians(286.4788975654116);
+    public static double MAX_ANG_VEL = Math.toRadians(180); //440.60343657668585
+    public static double MAX_ANG_ACCEL = Math.toRadians(180); //286.4788975654116
 
-    public static DcMotorSimple.Direction[] DIRECTIONS = new DcMotorSimple.Direction[]{DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.REVERSE,
-            DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD};
+    public static DcMotorSimple.Direction[] DIRECTIONS = new DcMotorSimple.Direction[]{DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD,
+            DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.REVERSE};
+
 
 
     public static double encoderTicksToInches(double ticks) {

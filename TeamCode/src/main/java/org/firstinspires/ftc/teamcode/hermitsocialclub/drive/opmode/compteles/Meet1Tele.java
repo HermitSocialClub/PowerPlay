@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.compteles;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
@@ -21,7 +21,7 @@ public class Meet1Tele extends LinearOpMode {
     double linearPower;
     boolean yesClaw;
     double clawPosition;
-    public CRServo claw;
+    public Servo claw;
 
     ElapsedTime runtime = new ElapsedTime();
     private boolean lastAMash = false;
@@ -44,7 +44,7 @@ public class Meet1Tele extends LinearOpMode {
         linear = hardwareMap.get(DcMotor.class,"linear");
         linear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
        // intake = hardwareMap.get(CRServo.class,"intake");
-        claw = hardwareMap.get(CRServo.class,"claw");
+        claw = hardwareMap.get(Servo.class,"claw");
 
         waitForStart();
         if (isStopRequested()) return;
@@ -58,12 +58,14 @@ public class Meet1Tele extends LinearOpMode {
                     precisionModifier = 0.9;
                     // telemetry.addLine("Precision Mode DEACTIVATED!");
                     telemetry.speak("Precision Mode DEACTIVATED");
+                    telemetry.addLine("precision mode deactivate");
 
                 } else {
                     precisionMode = true;
                     precisionModifier = 0.4;
                     //telemetry.addLine("Precision Mode ACTIVATED!");
                     telemetry.speak("Precision Mode ACTIVATED");
+                    telemetry.addLine("precision mode activate");
 
                 }
                 runtime.reset();
@@ -89,8 +91,8 @@ public class Meet1Tele extends LinearOpMode {
             linearPower = gamepad2.right_stick_y;
 
 
-            if (Math.abs(linearPower) < (0.05)){
-                linear.setPower(0.005);
+            if (Math.abs(linearPower) < (0.03)){
+                linear.setPower(0.003);
             }
             else {
                 linear.setPower(-linearPower);
@@ -113,14 +115,25 @@ public class Meet1Tele extends LinearOpMode {
 //            }
 
             if (gamepad2.left_bumper){
-                claw.setPower(-1);
-                //claw.setPosition(0);
+               // claw.setPower(-1);
+                claw.setPosition(0);
             } else if (gamepad2.right_bumper) {
-                claw.setPower(0.4);
-               // claw.setPosition(0.7);
+                //claw.setPower(0.4);
+               claw.setPosition(0.8);
             } else {
-                claw.setPower(0);
+               // claw.setPower(0);
+                claw.setPosition(0.5);
             }
+
+            if (gamepad2.left_trigger == 1){
+                drive.fourBar.setPosition(-1);
+            } else if (gamepad2.right_trigger == 1) {
+                drive.fourBar.setPosition(0.7);
+            } else {
+                drive.fourBar.setPosition(0.5);
+            }
+
+
 
           //  claw.setPower(gamepad2.left_stick_x);
 

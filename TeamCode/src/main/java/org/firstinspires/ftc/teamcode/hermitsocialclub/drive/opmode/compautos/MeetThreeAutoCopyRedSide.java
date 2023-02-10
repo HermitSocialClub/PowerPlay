@@ -182,7 +182,7 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
                     //drive.linearsMoveDown(500,0.5);
                 })
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPower(-1);
+                    drive.claw.setPosition(-1);
                     drive.linears.setPower(0.05);
                     //drive.linears.setPower(0);
                 })
@@ -200,7 +200,7 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
                     //drive.linearsMoveDown(500,0.5);
                 })
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPower(-1);
+                    drive.claw.setPosition(-1);
                     drive.linears.setPower(0.05);
                     //drive.linears.setPower(0);
                 })
@@ -221,7 +221,7 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
 
                 })
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPower(-1);
+                    drive.claw.setPosition(-1);
                     drive.linears.setPower(0.05);
                     //drive.linears.setPower(0);
                 })
@@ -234,7 +234,7 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
                 .splineToSplineHeading(new Pose2d(20, -14, Math.toRadians(180)), Math.toRadians(180))
                 .splineToSplineHeading(new Pose2d(8, -11.5, Math.toRadians(180)), Math.toRadians(180))
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPower(1);
+                    drive.claw.setPosition(1);
                 })
                 .build();
         Trajectory traj3 = drive.trajectoryBuilder(traj2.end(), Math.toRadians(0))
@@ -246,7 +246,7 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
                 //      .forward(1.5)
                 .splineToSplineHeading(new Pose2d(40, -8, Math.toRadians(50)), Math.toRadians(160))
                 .addDisplacementMarker(()->{
-                    drive.claw.setPower(-1);
+                    drive.claw.setPosition(-1);
                 })
                 .build();
 
@@ -275,7 +275,7 @@ public class MeetThreeAutoCopyRedSide extends LinearOpMode {
 
         if (isStopRequested()) return;
         resetRuntime();
-        drive.claw.setPower(1);
+        drive.claw.setPosition(1);
         while (getRuntime() < .500){}
         drive.followTrajectory(traj1butbackfirst);
 

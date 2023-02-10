@@ -91,7 +91,7 @@ public class bigwheelododriveconstants {
      */
     public static double MAX_VEL = 30; //30.264009229581674;//16;
     public static double MAX_ACCEL = 30;//30.264009229581674;//60.52801845916335;
-    public static double MAX_ANG_VEL = Math.toRadians(200);//(431.6);//(138.72);
+    public static double MAX_ANG_VEL = Math.toRadians( 200);//(431.6);//(138.72);
     public static double MAX_ANG_ACCEL = Math.toRadians(360);//(138.72);
 
     public static DcMotorSimple.Direction[] DIRECTIONS = new DcMotorSimple.Direction[]{DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD,

@@ -209,7 +209,7 @@ public class Meet3AutoButTheNewRobotThisTime extends LinearOpMode {
                             - 500);
                 })
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPower(0.65);
+                    drive.claw.setPosition(0.65);
                     //drive.linears.setPower(0);
                 })
 //                .strafeRight(10)
@@ -228,7 +228,7 @@ public class Meet3AutoButTheNewRobotThisTime extends LinearOpMode {
                             - 500);
                 })
                 .addDisplacementMarker(() -> {
-                    drive.claw.setPower(-1);
+                    drive.claw.setPosition(-1);
                     //drive.linears.setPower(0);
                 })
                 .build();
@@ -260,13 +260,13 @@ public class Meet3AutoButTheNewRobotThisTime extends LinearOpMode {
         waitForStart();
         if(isStopRequested()) return;
 
-        drive.claw.setPower(-1);
+        drive.claw.setPosition(-1);
         drive.followTrajectory(arcToFirstCone);
 //        drive.followTrajectory(straightToFirstJunction);
 //        drive.followTrajectory(arcAfterStraightToFirstJunction); //1
         //drive.turn(Math.toRadians(-95));
         drive.followTrajectory(toConeStackButStraight); //2
-        drive.claw.setPower(-1);
+        drive.claw.setPosition(-1);
 //        drive.followTrajectory(reversedToConeStackButStraight); //2
 //        drive.turn(-90); //2
 //        drive.followTrajectory(toConeStackButStraight); //3
