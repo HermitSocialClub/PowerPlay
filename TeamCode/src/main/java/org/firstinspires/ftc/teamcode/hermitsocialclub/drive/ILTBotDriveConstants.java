@@ -36,7 +36,7 @@ public class ILTBotDriveConstants {
      */
     public static final boolean RUN_USING_ENCODER = true;
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(0, 0, 0,
-            12.9);//getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
+       getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
 
     /*
      * These are physical constants that can be determined from your robot (including the track
@@ -48,7 +48,7 @@ public class ILTBotDriveConstants {
      */
     public static double WHEEL_RADIUS = 3; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 15; // in
+    public static double TRACK_WIDTH = 11.8; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -56,7 +56,7 @@ public class ILTBotDriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.0125 / rpmToVelocity(MAX_RPM);
+    public static double kV = 0.0125;
     public static double kA = 0.00235;
     public static double kStatic = 0.013;
 
