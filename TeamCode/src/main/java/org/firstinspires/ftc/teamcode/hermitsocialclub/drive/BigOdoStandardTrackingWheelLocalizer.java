@@ -33,11 +33,11 @@ public class BigOdoStandardTrackingWheelLocalizer extends ThreeTrackingWheelLoca
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
     public static double LATERAL_DISTANCE = 14.25; //8.75; // in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = 0; // in; offset of the lateral wheel
+    public static double FORWARD_OFFSET = -1; // in; offset of the lateral wheel
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
-    public static double X_MULTIPLIER = 1.16478891;//1.1789434231942163742767495919684; //1.1984116723897806122422375510251;//1.1; // Multiplier in the X direction
+    public static double X_MULTIPLIER = 1.1717435027097495642214956747788;//1.16478891;//1.1789434231942163742767495919684; //1.1984116723897806122422375510251;//1.1; // Multiplier in the X direction
     public static double Y_MULTIPLIER = 1.19038504;//1.172556299; //1.3744240831501428399787453475807;//1.20537; // Multiplier in the Y direction
 
     public BigOdoStandardTrackingWheelLocalizer(HardwareMap hardwareMap) {

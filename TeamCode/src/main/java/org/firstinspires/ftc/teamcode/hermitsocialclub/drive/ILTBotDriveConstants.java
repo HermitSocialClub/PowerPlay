@@ -48,7 +48,7 @@ public class ILTBotDriveConstants {
      */
     public static double WHEEL_RADIUS = 3; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 11.8; // in
+    public static double TRACK_WIDTH = 15.35; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -56,9 +56,9 @@ public class ILTBotDriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.0125;
-    public static double kA = 0.00235;
-    public static double kStatic = 0.013;
+    public static double kV = 0.0134;
+    public static double kA = 0.00246;
+    public static double kStatic = 0.014;
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -102,8 +102,8 @@ public class ILTBotDriveConstants {
      */
     public static double MAX_VEL = 60;
     public static double MAX_ACCEL = 60;
-    public static double MAX_ANG_VEL = Math.toRadians(180); //440.60343657668585
-    public static double MAX_ANG_ACCEL = Math.toRadians(180); //286.4788975654116
+    public static double MAX_ANG_VEL = Math.toRadians(430.4737961792763); //440.60343657668585
+    public static double MAX_ANG_ACCEL = Math.toRadians(280); //286.4788975654116
 
     public static DcMotorSimple.Direction[] DIRECTIONS = new DcMotorSimple.Direction[]{DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.FORWARD,
             DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.REVERSE};

@@ -32,6 +32,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAcceleration
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -55,10 +56,10 @@ import java.util.List;
  */
 @Config
 public class bigWheelOdoMecanum extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0,0,0);//(2.5, 0, 1.5);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0,0,0);//(5 , 0, 1);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8,0,1);//(2.5, 0, 1.5);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8,0,1);//(5 , 0, 1);
 
-    public static double LATERAL_MULTIPLIER = 1;//1.55;
+    public static double LATERAL_MULTIPLIER = 2.67;//1.55;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -80,6 +81,7 @@ public class bigWheelOdoMecanum extends MecanumDrive {
     public DcMotorEx leftFront, leftRear, rightRear, rightFront, linears;
     public Servo claw;
     public Servo fourBar;
+    public ColorSensor color;
     private List<DcMotorEx> motors;
 
     private BNO055IMU imu;
@@ -135,6 +137,7 @@ public class bigWheelOdoMecanum extends MecanumDrive {
         linears = hardwareMap.get(DcMotorEx.class, "linear");
         claw = hardwareMap.get(Servo.class,"claw");
         fourBar = hardwareMap.get(Servo.class,"fourBar");
+        color = hardwareMap.get(ColorSensor.class,"color");
 
         linears.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -331,6 +334,8 @@ public class bigWheelOdoMecanum extends MecanumDrive {
         }
         return wheelVelocities;
     }
+
+
 
     @Override
     public void setMotorPowers(double v, double v1, double v2, double v3) {
