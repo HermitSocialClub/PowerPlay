@@ -185,8 +185,8 @@ public class ILTAuto extends LinearOpMode {
         drive.setPoseEstimate(ToFirstCone);
 
         Trajectory t1 = drive.trajectoryBuilder(ToFirstCone)
-                .splineToConstantHeading(new Vector2d(-35,35),Math.toRadians(-90))
-                .splineToSplineHeading(new Pose2d(-35,10,Math.toRadians(140)),Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-35,40),Math.toRadians(-90))
+                .splineToSplineHeading(new Pose2d(-35,10,Math.toRadians(-50)),Math.toRadians(-90))
                 .build();
 
         Trajectory t2 = drive.trajectoryBuilder(t1.end())
@@ -194,14 +194,14 @@ public class ILTAuto extends LinearOpMode {
                 .build();
 
         Trajectory t3 = drive.trajectoryBuilder(t2.end())
-                .splineToSplineHeading(new Pose2d(-35,10,Math.toRadians(180)),Math.toRadians(140))
+                .splineToSplineHeading(new Pose2d(-35,10,Math.toRadians(180)),Math.toRadians(-50))
                 .build();
 
-        Trajectory right = drive.trajectoryBuilder(new Pose2d(t1.end().vec(),Math.toRadians(140)),Math.toRadians(180))
+        Trajectory right = drive.trajectoryBuilder(new Pose2d(t1.end().vec(),Math.toRadians(-50)),Math.toRadians(180))
                 .splineToLinearHeading(new Pose2d(-15,13,Math.toRadians(180)),Math.toRadians(180))
                 .build();
 
-        Trajectory left = drive.trajectoryBuilder(new Pose2d(t1.end().vec(),Math.toRadians(140)),Math.toRadians(180))
+        Trajectory left = drive.trajectoryBuilder(new Pose2d(t1.end().vec(),Math.toRadians(-50)),Math.toRadians(180))
                 .splineToLinearHeading(new Pose2d(-62,13,Math.toRadians(180)),Math.toRadians(180))
                 .build();
 
@@ -209,11 +209,11 @@ public class ILTAuto extends LinearOpMode {
         if (isStopRequested())return;
 
         drive.followTrajectory(t1);
-       // drive.followTrajectory(t2);
+        //drive.followTrajectory(t2);
        // drive.followTrajectory(t3);
 
         /* Actually do something useful */
-        if(tagOfInterest == null || tagOfInterest.id == LEFT) {
+      /*  if(tagOfInterest == null || tagOfInterest.id == LEFT) {
             drive.followTrajectory(left);
             telemetry.addData("tag null or left", tagOfInterest.id);
         }else if(tagOfInterest.id == MIDDLE){
@@ -222,7 +222,7 @@ public class ILTAuto extends LinearOpMode {
         }else{
             drive.followTrajectory(right);
             telemetry.addData("tag of interest right",tagOfInterest.id);
-        }
+        } */
 
         /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
         // while (opModeIsActive()) {sleep(20);}

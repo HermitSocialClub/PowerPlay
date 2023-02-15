@@ -69,14 +69,14 @@ public class Meet1Tele extends LinearOpMode {
                     precisionMode = false;
                     precisionModifier = 1;
                     // telemetry.addLine("Precision Mode DEACTIVATED!");
-                    telemetry.speak("Precision Mode DEACTIVATED");
+                    telemetry.speak("off");
                     telemetry.addLine("precision mode deactivate");
 
                 } else {
                     precisionMode = true;
                     precisionModifier = 0.5;
                     //telemetry.addLine("Precision Mode ACTIVATED!");
-                    telemetry.speak("Precision Mode ACTIVATED");
+                    telemetry.speak("on");
                     telemetry.addLine("precision mode activate");
 
                 }
@@ -124,7 +124,7 @@ public class Meet1Tele extends LinearOpMode {
             double denominator2 = Math.max(Math.abs(y) + Math.abs(x2) + Math.abs(rx), 1);
 
             if (precisionMode == false && reverseDirections == false) {
-                driveRightPower = (((y - x2 - rx) / denominator2) * 0.85);
+                driveRightPower = (((y - x2 - rx) / denominator2) * 0.90);
                 driveRight2Power = (((y + x - rx) / denominator) * 0.8);
                 driveLeftPower = ((y + x + rx) / denominator);
                 driveLeft2Power = (((y - x2 + rx) / denominator2) * 0.8);
@@ -134,12 +134,12 @@ public class Meet1Tele extends LinearOpMode {
                 driveLeftPower = ((y + x + rx) / denominator)*precisionModifier;
                 driveLeft2Power = (((y - x2 + rx) / denominator2) * 0.9)*precisionModifier;
             }else if (precisionMode == false && reverseDirections == true) {
-                driveRightPower = (((y - x2 - rx) / denominator2) * 0.85)*reverseMod;
+                driveRightPower = (((y - x2 - rx) / denominator2) * 0.9)*reverseMod;
                 driveRight2Power = (((y + x - rx) / denominator) * 0.8)*reverseMod;
                 driveLeftPower = ((y + x + rx) / denominator)*reverseMod;
                 driveLeft2Power = (((y - x2 + rx) / denominator2) * 0.8)*reverseMod;
             } else if (precisionMode == true && reverseDirections == true) {
-                driveRightPower = (((y - x2 - rx) / denominator2) * 0.95)*precisionModifier*reverseMod;
+                driveRightPower = (((y - x2 - rx) / denominator2) * 0.9)*precisionModifier*reverseMod;
                 driveRight2Power = (((y + x - rx) / denominator) * 0.9)*precisionModifier*reverseMod;
                 driveLeftPower = ((y + x + rx) / denominator)*precisionModifier*reverseMod;
                 driveLeft2Power = (((y - x2 + rx) / denominator2) * 0.9)*precisionModifier*reverseMod;
