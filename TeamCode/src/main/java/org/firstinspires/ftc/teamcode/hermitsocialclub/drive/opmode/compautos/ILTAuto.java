@@ -265,30 +265,30 @@ public class ILTAuto extends LinearOpMode {
         return;
     }
 
-    void strafeToPosition(double inches, double speed){
-        int move = (int) (Math.round(inches * cpi * meccyBias));
-        //
-        drive.leftRear.setTargetPosition(drive.leftRear.getCurrentPosition() - move);
-        drive.leftFront.setTargetPosition(drive.leftFront.getCurrentPosition() + move);
-        drive.rightRear.setTargetPosition(drive.rightRear.getCurrentPosition() + move);
-        drive.rightFront.setTargetPosition(drive.rightFront.getCurrentPosition() - move);
-        //
-        drive.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        drive.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        drive.leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        drive.rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //
-        drive.leftFront.setPower(speed);
-        drive.leftRear.setPower(speed);
-        drive.rightFront.setPower(speed);
-        drive.rightRear.setPower(speed);
-        //
-        while (drive.leftFront.isBusy() && drive.rightFront.isBusy() && drive.leftRear.isBusy() && drive.rightRear.isBusy()) {
-        }
-        drive.rightFront.setPower(0);
-        drive.leftFront.setPower(0);
-        drive.rightRear.setPower(0);
-        drive.leftRear.setPower(0);
-        return;
-    }
+//    void strafeToPosition(double inches, double speed){
+//        int move = (int) (Math.round(inches * cpi * meccyBias));
+//        //
+//        drive.leftRear.setTargetPosition(drive.leftRear.getCurrentPosition() - move);
+//        drive.leftFront.setTargetPosition(drive.leftFront.getCurrentPosition() + move);
+//        drive.rightRear.setTargetPosition(drive.rightRear.getCurrentPosition() + move);
+//        drive.rightFront.setTargetPosition(drive.rightFront.getCurrentPosition() - move);
+//        //
+//        drive.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        drive.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        drive.leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        drive.rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        //
+//        drive.leftFront.setPower(speed);
+//        drive.leftRear.setPower(speed);
+//        drive.rightFront.setPower(speed);
+//        drive.rightRear.setPower(speed);
+//        //
+//        while (drive.leftFront.isBusy() && drive.rightFront.isBusy() && drive.leftRear.isBusy() && drive.rightRear.isBusy()) {
+//        }
+//        drive.rightFront.setPower(0);
+//        drive.leftFront.setPower(0);
+//        drive.rightRear.setPower(0);
+//        drive.leftRear.setPower(0);
+//        return;
+//    }
 }

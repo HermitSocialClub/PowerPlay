@@ -20,7 +20,7 @@ public class LinearPID extends LinearOpMode {
         waitForStart();
         if (isStopRequested())return;
 
-        linearsMoveAuto(600);
+        linearsMoveAuto(3000);
 
     }
 

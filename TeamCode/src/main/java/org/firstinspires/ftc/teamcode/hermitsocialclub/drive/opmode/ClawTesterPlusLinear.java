@@ -18,6 +18,9 @@ public class ClawTesterPlusLinear extends LinearOpMode {
         claw = hardwareMap.get(Servo.class,"claw");
         linear = hardwareMap.get(DcMotor.class,"linear");
 
+        linear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         waitForStart();
         if (isStopRequested())return;
 
@@ -37,6 +40,9 @@ public class ClawTesterPlusLinear extends LinearOpMode {
             } else {
                 linear.setPower(-linearPower);
             }
+
+            telemetry.addData(" Linear", linear.getCurrentPosition());
+            telemetry.update();
         }
     }
 }
