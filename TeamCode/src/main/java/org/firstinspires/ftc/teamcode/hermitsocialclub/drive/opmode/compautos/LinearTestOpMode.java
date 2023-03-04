@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.compautos;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
 
+@Disabled
 @Autonomous (name = "LinearTestOpMode")
 public class LinearTestOpMode extends LinearOpMode {
     @Override

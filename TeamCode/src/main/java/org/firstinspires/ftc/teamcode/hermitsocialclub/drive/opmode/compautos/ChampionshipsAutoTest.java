@@ -1,9 +1,39 @@
 package org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.compautos;
 
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.afterToStackFromHighPoleClawCloseLinearHeight;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.backToJunction1Head;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.backToJunction1Tan;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.backToJunction1X;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.backToJunction1Y;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.backToJunction2Head;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.backToJunction2Tan;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.backToJunction2X;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.backToJunction2Y;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.sleepAfterClawCloses;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.sleepAfterLinearRaisesAfterStack;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.sleepAfterToStack;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.startingHead;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.startingX;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.startingY;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toFirstPoleLinearHeight;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toFirstPoleSpline1Tan;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toFirstPoleSpline1X;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toFirstPoleSpline1Y;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toFirstPoleSpline2Head;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toFirstPoleSpline2Tan;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toFirstPoleSpline2X;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toFirstPoleSpline2Y;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toStackFromHighPoleHead;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toStackFromHighPoleLinearHeight;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toStackFromHighPoleTan;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toStackFromHighPoleX;
+import static org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.ChampAutoConfig.toStackFromHighPoleY;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
@@ -11,8 +41,9 @@ import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.Ap
 import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.LinearHelpers;
 import org.firstinspires.ftc.teamcode.hermitsocialclub.trajectorysequence.TrajectorySequence;
 
-@Autonomous (name = "ChampionshipsAuto")
-public class ChampionshipsAuto extends LinearOpMode {
+@Disabled
+@Autonomous (name = "ChampionshipsAutoTest")
+public class ChampionshipsAutoTest extends LinearOpMode {
     AprilTagsWrapper vision;
     public bigWheelOdoMecanum drive;
 
@@ -42,49 +73,23 @@ public class ChampionshipsAuto extends LinearOpMode {
         /* Update the telemetry */
         vision.lastSnapshot();
 
-        Pose2d starting = new Pose2d(32.5, 63, Math.toRadians(-90));
+        Pose2d starting = new Pose2d(startingX, startingY, Math.toRadians(startingHead));
         drive.setPoseEstimate(starting);
         Trajectory toFirstPole = drive.trajectoryBuilder(new Pose2d(starting.vec(),Math.toRadians(-90)),Math.toRadians(-90))
-                .splineTo(new Vector2d(36,28),m(-90))
-                .splineToSplineHeading(new Pose2d(34.25,6.25,m(-135)),m(-90))
-                .addDisplacementMarker(0.5, ()->{
-                    linearHelpers.setLinearHeight(2170);  // previously 4000
+                .splineTo(new Vector2d(toFirstPoleSpline1X,toFirstPoleSpline1Y),m(toFirstPoleSpline1Tan))
+                .splineToSplineHeading(new Pose2d(toFirstPoleSpline2X,toFirstPoleSpline2Y,m(toFirstPoleSpline2Head)),m(toFirstPoleSpline2Tan))
+                .addDisplacementMarker(5, ()->{
+                    linearHelpers.setLinearHeight(toFirstPoleLinearHeight);  // previously 4000
                     //drive.claw.setPosition(1.0);  // prev 0
                     //TODO find tics per inch for linears
                 })
-//                .addDisplacementMarker(()->{
-//                    telemetry.addData("working", false);
-//                    linearHelpers.waitForLinears();
-//                    telemetry.addData("working", true);
-//                    sleep(1000);
-//                    linearHelpers.setLinearHeight(1900);
-//                    linearHelpers.openClaw();
-//                    sleep(1000);
-//                    linearHelpers.setLinearHeight (360);
-//                })
               //  .splineToConstantHeading(new Vector2d(36,12),m(-90))
               //  .splineTo(new Vector2d(32, 8), m(-135))
               //  .splineTo(new Vector2d(36, 28), m(-135))
                 .build();
-        TrajectorySequence linearsMoveAndStuff = drive.trajectorySequenceBuilder(toFirstPole.end())
-                        .addDisplacementMarker(()->{
-                            linearHelpers.waitForLinears();
-                            telemetry.addData("working", true); })
-                                .waitSeconds(1)
-                                        .addDisplacementMarker(()->{
-                                            linearHelpers.setLinearHeight(1900);
-                                            linearHelpers.openClaw();
-                                        })
-                                                .waitSeconds(1)
-                                                        .addDisplacementMarker(()->{
-                                                            linearHelpers.setLinearHeight (360);
-                                                        })
-                .build();
-
         Trajectory toStackFromHighPole = drive.trajectoryBuilder(toFirstPole.end(), m(90))
                // .splineToSplineHeading(new Pose2d(60, 12, m(0)), m(-5))
-                .splineToSplineHeading(new Pose2d(50, 12.5, m(0)), m(-5))
-                .splineToSplineHeading(new Pose2d(60.25,14.2,m(2)),m(0))
+                .splineToSplineHeading(new Pose2d(toStackFromHighPoleX, toStackFromHighPoleY, m(toStackFromHighPoleTan)), m(toStackFromHighPoleHead))
                 .build();
 /*        TrajectorySequence backAfterFirstSequence = drive.trajectorySequenceBuilder(autonSequence.end())
                 .back(0.25)
@@ -102,16 +107,16 @@ public class ChampionshipsAuto extends LinearOpMode {
                 Trajectory toJunction = drive.trajectoryBuilder(toCones1.end())
                         .splineToSplineHeading(new Pose2d(32,6.5,m(-135)),m(0))
                         .addDisplacementMarker(()->{
-                            linearHelpers.setLinearHeight(2170);
+                            linearHelpers.setLinearHeight(toFirstPoleLinearHeight);
                         })
                         .build();
 
                 Trajectory backToJunction = drive.trajectoryBuilder(toStackFromHighPole.end())
-                        .splineToSplineHeading(new Pose2d(43,14,m(-90)),m(0))
+                        .splineToSplineHeading(new Pose2d(backToJunction1X,backToJunction1Y,m(backToJunction1Head)),m(backToJunction1Tan))
                         .addDisplacementMarker(()->{
-                            linearHelpers.setLinearHeight(2170);
+                            linearHelpers.setLinearHeight(toFirstPoleLinearHeight);
                         })
-                        .splineToSplineHeading(new Pose2d(32,6.5,m(-135)),m(-150))
+                        .splineToSplineHeading(new Pose2d(backToJunction2X,backToJunction2Y,m(backToJunction2Head)),m(backToJunction2Tan))
                         .build();
 
            /*     Trajectory toCones2 = drive.trajectoryBuilder(toJunction.end())
@@ -171,27 +176,22 @@ public class ChampionshipsAuto extends LinearOpMode {
        // initialLinears = linears.getCurrentPosition();
 //        drive.claw.setPosition(1.0);  // 0.8
         linearHelpers.closeClaw();
-        sleep(1000);
         drive.followTrajectory(toFirstPole);
-        //drive.followTrajectorySequence(linearsMoveAndStuff);
-//        telemetry.addData("working", false);
-//        linearHelpers.waitForLinears();
-//        telemetry.addData("working", true);
-        linearHelpers.setLinearHeight(1000);
-//        linearHelpers.waitForLinears();
+        telemetry.addData("working", false);
+        linearHelpers.waitForLinears();
+        telemetry.addData("working", true);
         linearHelpers.openClaw();
-        sleep(500);
-         linearHelpers.setLinearHeight (360);  // approx 55 ticks per inch
+         linearHelpers.setLinearHeight (toStackFromHighPoleLinearHeight);  // approx 55 ticks per inch
         drive.followTrajectory(toStackFromHighPole);
         //drive.followTrajectory(toCones1);
         linearHelpers.waitForLinears();
-        sleep(900);
+        sleep(sleepAfterToStack);
         linearHelpers.closeClaw();
-        sleep(1000);
+        sleep(sleepAfterClawCloses);
         //drive.followTrajectorySequence(wait);
-        linearHelpers.setLinearHeight(700);
+        linearHelpers.setLinearHeight(afterToStackFromHighPoleClawCloseLinearHeight);
         linearHelpers.waitForLinears();
-       /* sleep(1000);
+        sleep(sleepAfterLinearRaisesAfterStack);
         //drive.followTrajectorySequence(wait);
         drive.followTrajectory(backToJunction);
         telemetry.addData("working", false);
@@ -200,7 +200,7 @@ public class ChampionshipsAuto extends LinearOpMode {
         linearHelpers.openClaw();
         linearHelpers.setLinearHeight(0);
         linearHelpers.waitForLinears();
-*/
+
 
        // drive.followTrajectory(toCones1);
      //   drive.followTrajectory(toJunction);
@@ -218,7 +218,7 @@ public class ChampionshipsAuto extends LinearOpMode {
 //        drive.turn(180);
 //        drive.followTrajectory(goToStack);
 
-    /*    if (vision.tagOfInterest == null || vision.tagOfInterest.id == vision.LEFT) {
+        if (vision.tagOfInterest == null || vision.tagOfInterest.id == vision.LEFT) {
 
             drive.followTrajectorySequence(leftPark);
 //
@@ -240,7 +240,7 @@ public class ChampionshipsAuto extends LinearOpMode {
 ////            drive.followTrajectory(bottomPark);
 //            telemetry.addData("tag of interest right", vision.tagOfInterest.id);
 //
-        }*/
+        }
     }
 //    public void linearsMoveAuto (int distance){
 //        linears.setTargetPosition(linears.getCurrentPosition()+distance);

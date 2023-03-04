@@ -4,12 +4,11 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
-
-import java.util.Timer;
 
 
 @TeleOp (name = "Meet1Tele", group = "Pushbot")
@@ -61,14 +60,14 @@ public class Meet1Tele extends LinearOpMode {
        // intake = hardwareMap.get(CRServo.class,"intake");
         claw = hardwareMap.get(Servo.class,"claw");
         drive.setPoseEstimate(new Pose2d(0, 0, 0));
-        new ElapsedTime();
-        Timer timer = new Timer();
+        ElapsedTime opmodeRunTime = new ElapsedTime();
 
 
         waitForStart();
         if (isStopRequested()) return;
 
         while (opModeIsActive()){
+            opmodeRunTime.reset();
 //            if (gamepad1.a) {
 //                precisionMode = !precisionMode;
 //                precisionModifier = precisionMode ? 1 : 0.5;
@@ -117,7 +116,6 @@ public class Meet1Tele extends LinearOpMode {
                 runtime.reset();
 
             }
-
 
 
             lastAMash = gamepad1.b;
@@ -254,6 +252,37 @@ public class Meet1Tele extends LinearOpMode {
                 linear.setPower(0);
             } else {
                 linear.setPower(-linearPower);
+            }
+
+            Gamepad.LedEffect rgbEffect = new Gamepad.LedEffect.Builder()
+                    .addStep(1, 0, 1, 250) // Show red for 250ms
+                    .addStep(0, 1, 0, 250) // Show green for 250ms
+                    .addStep(1, 0, 0, 500) // Show blue for 250ms
+                    .build();
+
+            Gamepad.RumbleEffect effect = new Gamepad.RumbleEffect.Builder()
+                    .addStep(0.0, 0.0, 90000)  //  Rumble right motor 100% for 500 mSec
+                   // .addStep(0.0, 0.0, 5000)  //  Pause for 300 mSec
+                    .addStep(1.0,1.0,1000)
+                    .build();
+
+
+
+            if (gamepad1.dpad_down){
+                gamepad1.runRumbleEffect(effect);
+                gamepad1.runLedEffect(rgbEffect);
+            }
+
+            if (gamepad1.dpad_right){
+                gamepad1.setLedColor(255,0,0,5000);
+            }
+
+            if (opmodeRunTime.seconds()>=0) {
+                gamepad1.runRumbleEffect(effect);
+//                gamepad1.rumble(5000);
+//                gamepad2.rumble(5000);
+//                //gamepad1.setLedColor(255,0,0,5000);
+//                gamepad1.runLedEffect(rgbEffect);
             }
 
 //            if (Math.abs(linearPower) < (0.03)){

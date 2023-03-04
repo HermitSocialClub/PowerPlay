@@ -5,43 +5,172 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.hermitsocialclub.apriltags.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.bigWheelOdoMecanum;
-import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.AprilTagsWrapper;
 import org.firstinspires.ftc.teamcode.hermitsocialclub.drive.opmode.othershit.LinearHelpers;
 import org.firstinspires.ftc.teamcode.hermitsocialclub.trajectorysequence.TrajectorySequence;
+import org.openftc.apriltag.AprilTagDetection;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous (name = "ChampionshipsAuto")
-public class ChampionshipsAuto extends LinearOpMode {
-    AprilTagsWrapper vision;
+import java.util.ArrayList;
+
+@Autonomous (name = "ChampAutoFastPhalanges")
+public class ChampAutoFastPhalanges extends LinearOpMode {
+    OpenCvCamera camera;
+    AprilTagDetectionPipeline aprilTagDetectionPipeline;
+
     public bigWheelOdoMecanum drive;
-
     LinearHelpers linearHelpers;
+
+    private ElapsedTime linearTime;
+
+    static final double FEET_PER_METER = 3.28084;
+
+    int cpr = 28; //counts per rotation
+    int gear_ratio = 40;
+    double diameter = 4.125;
+  //  int initialLinears;
+    double cpi = (cpr * gear_ratio) / (Math.PI * diameter); //counts per inch, 28cpr * gear ratio / (2 * pi * diameter (in inches, in the center))
+    double bias = 0.8;//default 0.8
+    double meccyBias = 0.9;//change to adjust only strafing movement
+    double speed = .5;
+
+    Double conversion = cpi * bias;
+    Boolean exit = false;
+
+    // Lens intrinsics
+    // UNITS ARE PIXELS
+    // NOTE: this calibration is for the C920 webcam at 800x448.
+    // You will need to do your own calibration for other configurations!
+    // need to update because we need our exact location!
+    double fx = 578.272;
+    double fy = 578.272;
+    double cx = 402.145;
+    double cy = 221.506;
+    DcMotor linears;
+
+    // UNITS ARE METERS - need to update for our tag size
+    double tagsize = 0.04;  // was .166
+
+    // insert our tags of interest here - three or two w default if not seen
+    //int ID_TAG_OF_INTEREST = 18; // Tag ID 18 from the 36h11 family
+    int LEFT = 1;
+    int MIDDLE = 2;
+    int RIGHT = 3;
+
+    AprilTagDetection tagOfInterest = null;
+
+    //Key Positions Blue
+
+//    Pose2d toFirstCone2 = new Pose2d(-15,62,-90);
+
+    Trajectory partOne;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
+//        right_drive = hardwareMap.get(DcMotor.class,"right_drive");
+//        right_drive.setDirection(DcMotorSimple.Direction.REVERSE);
+//        right_drive_2 = hardwareMap.get(DcMotor.class,"right_drive_2");
+//        right_drive_2.setDirection(DcMotorSimple.Direction.REVERSE);
+//        left_drive = hardwareMap.get(DcMotor.class,"left_drive");
+//        left_drive_2 = hardwareMap.get(DcMotor.class,"left_drive_2");
+
+
         bigWheelOdoMecanum drive = new bigWheelOdoMecanum(hardwareMap);
         linearHelpers = new LinearHelpers(drive, hardwareMap, telemetry);
-        vision = new AprilTagsWrapper(hardwareMap, telemetry);
-        vision.initialize();
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+
+        camera.setPipeline(aprilTagDetectionPipeline);
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                camera.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+
+            }
+        });
+
+        telemetry.setMsTransmissionInterval(50);
+
         /*
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
         //april tags starts here
         while (!isStarted() && !isStopRequested()) {
-            vision.runVision();
+            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+
+            if (currentDetections.size() != 0) {
+                boolean tagFound = false;
+
+                for (AprilTagDetection tag : currentDetections) {
+                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
+                        tagOfInterest = tag;
+                        tagFound = true;
+                        break;
+                    }
+                }
+
+                if (tagFound) {
+                    telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
+                    tagToTelemetry(tagOfInterest);
+                } else {
+                    telemetry.addLine("Don't see tag of interest :(");
+
+                    if (tagOfInterest == null) {
+                        telemetry.addLine("(The tag has never been seen)");
+                    } else {
+                        telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
+                        tagToTelemetry(tagOfInterest);
+                    }
+                }
+
+            } else {
+                telemetry.addLine("Don't see tag of interest :(");
+
+                if (tagOfInterest == null) {
+                    telemetry.addLine("(The tag has never been seen)");
+                } else {
+                    telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
+                    tagToTelemetry(tagOfInterest);
+                }
+
+            }
+
+            telemetry.update();
             sleep(20);
         }
+
         /*
          * The START command just came in: now work off the latest snapshot acquired
          * during the init loop.
          */
 
         /* Update the telemetry */
-        vision.lastSnapshot();
+        if (tagOfInterest != null) {
+            telemetry.addLine("Tag snapshot:\n");
+            tagToTelemetry(tagOfInterest);
+            telemetry.update();
+        } else {
+            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
+            telemetry.update();
+        }
 
+
+       //oldAUTON()
         Pose2d starting = new Pose2d(32.5, 63, Math.toRadians(-90));
         drive.setPoseEstimate(starting);
         Trajectory toFirstPole = drive.trajectoryBuilder(new Pose2d(starting.vec(),Math.toRadians(-90)),Math.toRadians(-90))
@@ -62,27 +191,27 @@ public class ChampionshipsAuto extends LinearOpMode {
 //                    sleep(1000);
 //                    linearHelpers.setLinearHeight (360);
 //                })
-              //  .splineToConstantHeading(new Vector2d(36,12),m(-90))
-              //  .splineTo(new Vector2d(32, 8), m(-135))
-              //  .splineTo(new Vector2d(36, 28), m(-135))
+                //  .splineToConstantHeading(new Vector2d(36,12),m(-90))
+                //  .splineTo(new Vector2d(32, 8), m(-135))
+                //  .splineTo(new Vector2d(36, 28), m(-135))
                 .build();
         TrajectorySequence linearsMoveAndStuff = drive.trajectorySequenceBuilder(toFirstPole.end())
-                        .addDisplacementMarker(()->{
-                            linearHelpers.waitForLinears();
-                            telemetry.addData("working", true); })
-                                .waitSeconds(1)
-                                        .addDisplacementMarker(()->{
-                                            linearHelpers.setLinearHeight(1900);
-                                            linearHelpers.openClaw();
-                                        })
-                                                .waitSeconds(1)
-                                                        .addDisplacementMarker(()->{
-                                                            linearHelpers.setLinearHeight (360);
-                                                        })
+                .addDisplacementMarker(()->{
+                    linearHelpers.waitForLinears();
+                    telemetry.addData("working", true); })
+                .waitSeconds(1)
+                .addDisplacementMarker(()->{
+                    linearHelpers.setLinearHeight(1900);
+                    linearHelpers.openClaw();
+                })
+                .waitSeconds(1)
+                .addDisplacementMarker(()->{
+                    linearHelpers.setLinearHeight (360);
+                })
                 .build();
 
         Trajectory toStackFromHighPole = drive.trajectoryBuilder(toFirstPole.end(), m(90))
-               // .splineToSplineHeading(new Pose2d(60, 12, m(0)), m(-5))
+                // .splineToSplineHeading(new Pose2d(60, 12, m(0)), m(-5))
                 .splineToSplineHeading(new Pose2d(50, 12.5, m(0)), m(-5))
                 .splineToSplineHeading(new Pose2d(60.25,14.2,m(2)),m(0))
                 .build();
@@ -94,25 +223,25 @@ public class ChampionshipsAuto extends LinearOpMode {
                 })
                 .build();
 */
-                Trajectory toCones1 = drive.trajectoryBuilder(toFirstPole.end())
-                       // .splineToConstantHeading(new Vector2d(32))
-                        .splineToSplineHeading(new Pose2d(60,13,m(0)),m(0))
-                        .build();
+        Trajectory toCones1 = drive.trajectoryBuilder(toFirstPole.end())
+                // .splineToConstantHeading(new Vector2d(32))
+                .splineToSplineHeading(new Pose2d(60,13,m(0)),m(0))
+                .build();
 
-                Trajectory toJunction = drive.trajectoryBuilder(toCones1.end())
-                        .splineToSplineHeading(new Pose2d(32,6.5,m(-135)),m(0))
-                        .addDisplacementMarker(()->{
-                            linearHelpers.setLinearHeight(2170);
-                        })
-                        .build();
+        Trajectory toJunction = drive.trajectoryBuilder(toCones1.end())
+                .splineToSplineHeading(new Pose2d(32,6.5,m(-135)),m(0))
+                .addDisplacementMarker(()->{
+                    linearHelpers.setLinearHeight(2170);
+                })
+                .build();
 
-                Trajectory backToJunction = drive.trajectoryBuilder(toStackFromHighPole.end())
-                        .splineToSplineHeading(new Pose2d(43,14,m(-90)),m(0))
-                        .addDisplacementMarker(()->{
-                            linearHelpers.setLinearHeight(2170);
-                        })
-                        .splineToSplineHeading(new Pose2d(32,6.5,m(-135)),m(-150))
-                        .build();
+        Trajectory backToJunction = drive.trajectoryBuilder(toStackFromHighPole.end())
+                .splineToSplineHeading(new Pose2d(43,14,m(-90)),m(0))
+                .addDisplacementMarker(()->{
+                    linearHelpers.setLinearHeight(2170);
+                })
+                .splineToSplineHeading(new Pose2d(32,6.5,m(-135)),m(-150))
+                .build();
 
            /*     Trajectory toCones2 = drive.trajectoryBuilder(toJunction.end())
                         .splineToSplineHeading(new Pose2d(60,13,m(0)),m(0))
@@ -168,7 +297,7 @@ public class ChampionshipsAuto extends LinearOpMode {
 //                        .
         waitForStart();
         if(isStopRequested()) return;
-       // initialLinears = linears.getCurrentPosition();
+        // initialLinears = linears.getCurrentPosition();
 //        drive.claw.setPosition(1.0);  // 0.8
         linearHelpers.closeClaw();
         sleep(1000);
@@ -181,7 +310,7 @@ public class ChampionshipsAuto extends LinearOpMode {
 //        linearHelpers.waitForLinears();
         linearHelpers.openClaw();
         sleep(500);
-         linearHelpers.setLinearHeight (360);  // approx 55 ticks per inch
+        linearHelpers.setLinearHeight (360);  // approx 55 ticks per inch
         drive.followTrajectory(toStackFromHighPole);
         //drive.followTrajectory(toCones1);
         linearHelpers.waitForLinears();
@@ -191,63 +320,48 @@ public class ChampionshipsAuto extends LinearOpMode {
         //drive.followTrajectorySequence(wait);
         linearHelpers.setLinearHeight(700);
         linearHelpers.waitForLinears();
-       /* sleep(1000);
-        //drive.followTrajectorySequence(wait);
-        drive.followTrajectory(backToJunction);
-        telemetry.addData("working", false);
-        linearHelpers.waitForLinears();
-        telemetry.addData("working", true);
-        linearHelpers.openClaw();
-        linearHelpers.setLinearHeight(0);
-        linearHelpers.waitForLinears();
-*/
 
-       // drive.followTrajectory(toCones1);
-     //   drive.followTrajectory(toJunction);
-     //   drive.followTrajectory(toCones2);
-    //    drive.followTrajectory(toJunction);
+        if (tagOfInterest == null || tagOfInterest.id == LEFT) {
 
-//        drive.followTrajectory(firstCone);
-//        drive.turn(Math.toRadians(-45));
-//        drive.followTrajectory(inchForward);
-//        //score
-//        drive.followTrajectory(inchBack);
-//        drive.turn(Math.toRadians(-135));
-//        drive.followTrajectory(drivetoCone);
-//        drive.followTrajectory(strafeToCone);
-//        drive.turn(180);
-//        drive.followTrajectory(goToStack);
+            drive.followTrajectorySequence(rightPark);
 
-    /*    if (vision.tagOfInterest == null || vision.tagOfInterest.id == vision.LEFT) {
+//            drive.followTrajectory(middlePark);
+//            drive.followTrajectory(frontPark);
+            telemetry.addData("tag null or left", tagOfInterest.id);
 
-            drive.followTrajectorySequence(leftPark);
-//
-////            drive.followTrajectory(middlePark);
-////            drive.followTrajectory(frontPark);
-//            telemetry.addData("tag null or left", vision.tagOfInterest.id);
-//
-        } else if (vision.tagOfInterest.id == vision.MIDDLE) {
+        } else if (tagOfInterest.id == MIDDLE) {
 
             drive.followTrajectorySequence(middlePark);
-////            drive.followTrajectory(middlePark);
-//            telemetry.addData("tag middle", vision.tagOfInterest.id);
-//
+//            drive.followTrajectory(middlePark);
+            telemetry.addData("tag middle", tagOfInterest.id);
+
         } else {
-//
-            drive.followTrajectorySequence(rightPark);
-//
-////            drive.followTrajectory(middlePark);
-////            drive.followTrajectory(bottomPark);
-//            telemetry.addData("tag of interest right", vision.tagOfInterest.id);
-//
-        }*/
+
+            drive.followTrajectorySequence(leftPark);
+
+//            drive.followTrajectory(middlePark);
+//            drive.followTrajectory(bottomPark);
+            telemetry.addData("tag of interest right", tagOfInterest.id);
+
+        }
     }
-//    public void linearsMoveAuto (int distance){
-//        linears.setTargetPosition(linears.getCurrentPosition()+distance);
-//        linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        // 3 below
-//        linears.setPower(0.9);
-//    }
+
+    void tagToTelemetry(AprilTagDetection detection)
+    {
+        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
+        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
+        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
+        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
+        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
+        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
+        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+    }
+    public void linearsMoveAuto (int distance){
+        linears.setTargetPosition(linears.getCurrentPosition()+distance);
+        linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // 3 below
+        linears.setPower(0.7);
+    }
 
 //    public void linearsMoveAuto (double targetPos){
 //
@@ -325,14 +439,6 @@ public class ChampionshipsAuto extends LinearOpMode {
 //            }
 //        }
 
-//    public void linearsToTime (double timeout, double speed){
-//        linearTime.reset();
-//        while (linearTime.seconds() < timeout){
-//            drive.linears.setPower(speed);
-//        }
-//        drive.linears.setPower(0);
-//
-//    }
     public static double m(double heading) {
         return Math.toRadians(heading);
     }
