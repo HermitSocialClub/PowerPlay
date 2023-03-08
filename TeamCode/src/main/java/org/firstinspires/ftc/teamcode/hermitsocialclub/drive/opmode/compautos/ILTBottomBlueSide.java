@@ -185,7 +185,7 @@ public class ILTBottomBlueSide extends LinearOpMode {
                 .addDisplacementMarker(() -> {
                     drive.claw.setPosition(0);
                 })
-                .waitSeconds(1)
+                .waitSeconds(0.5)
                 .back(5)
                 .waitSeconds(1)
 //                .turn(Math.toRadians(-135))
