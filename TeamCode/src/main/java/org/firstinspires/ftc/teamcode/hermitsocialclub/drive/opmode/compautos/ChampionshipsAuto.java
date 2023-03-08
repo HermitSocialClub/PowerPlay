@@ -159,7 +159,7 @@ public class ChampionshipsAuto extends LinearOpMode {
         if(isStopRequested()) return;
        // initialLinears = linears.getCurrentPosition();
 //        drive.claw.setPosition(1.0);  // 0.8
-        linearHelpers.closeClaw();
+        closeClaw();
         sleep(1000);
         drive.followTrajectory(toFirstPole);
         //drive.followTrajectorySequence(linearsMoveAndStuff);
@@ -168,14 +168,14 @@ public class ChampionshipsAuto extends LinearOpMode {
 //        telemetry.addData("working", true);
         linearHelpers.setLinearHeight(1000);
 //        linearHelpers.waitForLinears();
-        linearHelpers.openClaw();
+        openClaw();
         sleep(500);
          linearHelpers.setLinearHeight (350);  // approx 55 ticks per inch
         drive.followTrajectory(toStackFromHighPole);
         //drive.followTrajectory(toCones1);
       //  linearHelpers.waitForLinears();
         sleep(500);
-        linearHelpers.closeClaw();
+        closeClaw();
         sleep(500);
         //drive.followTrajectorySequence(wait);
         linearHelpers.setLinearHeight(700);
@@ -187,18 +187,18 @@ public class ChampionshipsAuto extends LinearOpMode {
         //telemetry.addData("working", false);
     //    linearHelpers.waitForLinears();
       //  telemetry.addData("working", true);
-        linearHelpers.openClaw();
+        openClaw();
         sleep(500);
         linearHelpers.setLinearHeight(280);
         drive.followTrajectory(toStackFromHighPole);
         sleep(500);
-        linearHelpers.closeClaw();
+        closeClaw();
         sleep(500);
         linearHelpers.setLinearHeight(700);
         sleep(500);
         drive.followTrajectory(backToJunction);
         linearHelpers.setLinearHeight(1000);
-        linearHelpers.openClaw();
+        openClaw();
         linearHelpers.setLinearHeight(0);
      //   linearHelpers.waitForLinears();
 
@@ -249,7 +249,12 @@ public class ChampionshipsAuto extends LinearOpMode {
 //        // 3 below
 //        linears.setPower(0.9);
 //    }
-
+public void closeClaw() {
+    drive.claw.setPosition(1);
+}
+    public void openClaw() {
+        drive.claw.setPosition(0);
+    }
 //    public void linearsMoveAuto (double targetPos){
 //
 //        linears.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

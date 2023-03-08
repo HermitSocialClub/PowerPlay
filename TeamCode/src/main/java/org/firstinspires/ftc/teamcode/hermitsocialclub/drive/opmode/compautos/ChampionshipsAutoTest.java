@@ -175,18 +175,18 @@ public class ChampionshipsAutoTest extends LinearOpMode {
         if(isStopRequested()) return;
        // initialLinears = linears.getCurrentPosition();
 //        drive.claw.setPosition(1.0);  // 0.8
-        linearHelpers.closeClaw();
+        closeClaw();
         drive.followTrajectory(toFirstPole);
         telemetry.addData("working", false);
         linearHelpers.waitForLinears();
         telemetry.addData("working", true);
-        linearHelpers.openClaw();
+        openClaw();
          linearHelpers.setLinearHeight (toStackFromHighPoleLinearHeight);  // approx 55 ticks per inch
         drive.followTrajectory(toStackFromHighPole);
         //drive.followTrajectory(toCones1);
         linearHelpers.waitForLinears();
         sleep(sleepAfterToStack);
-        linearHelpers.closeClaw();
+        closeClaw();
         sleep(sleepAfterClawCloses);
         //drive.followTrajectorySequence(wait);
         linearHelpers.setLinearHeight(afterToStackFromHighPoleClawCloseLinearHeight);
@@ -197,7 +197,7 @@ public class ChampionshipsAutoTest extends LinearOpMode {
         telemetry.addData("working", false);
         linearHelpers.waitForLinears();
         telemetry.addData("working", true);
-        linearHelpers.openClaw();
+        openClaw();
         linearHelpers.setLinearHeight(0);
         linearHelpers.waitForLinears();
 
@@ -324,7 +324,12 @@ public class ChampionshipsAutoTest extends LinearOpMode {
 //                linears.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //            }
 //        }
-
+public void closeClaw() {
+    drive.claw.setPosition(1);
+}
+    public void openClaw() {
+        drive.claw.setPosition(0);
+    }
 //    public void linearsToTime (double timeout, double speed){
 //        linearTime.reset();
 //        while (linearTime.seconds() < timeout){

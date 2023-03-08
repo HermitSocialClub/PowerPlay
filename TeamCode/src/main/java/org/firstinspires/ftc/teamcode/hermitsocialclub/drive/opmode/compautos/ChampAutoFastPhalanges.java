@@ -204,7 +204,7 @@ public class ChampAutoFastPhalanges extends LinearOpMode {
                 .waitSeconds(1)
                 .addDisplacementMarker(()->{
                     linearHelpers.setLinearHeight(1900);
-                    linearHelpers.openClaw();
+                    openClaw();
                 })
                 .waitSeconds(1)
                 .addDisplacementMarker(()->{
@@ -301,7 +301,7 @@ public class ChampAutoFastPhalanges extends LinearOpMode {
         if(isStopRequested()) return;
         // initialLinears = linears.getCurrentPosition();
 //        drive.claw.setPosition(1.0);  // 0.8
-        linearHelpers.closeClaw();
+        closeClaw();
         sleep(1000);
         drive.followTrajectory(toFirstPole);
         //drive.followTrajectorySequence(linearsMoveAndStuff);
@@ -310,14 +310,14 @@ public class ChampAutoFastPhalanges extends LinearOpMode {
 //        telemetry.addData("working", true);
         linearHelpers.setLinearHeight(1000);
 //        linearHelpers.waitForLinears();
-        linearHelpers.openClaw();
+        openClaw();
         sleep(500);
         linearHelpers.setLinearHeight (360);  // approx 55 ticks per inch
         drive.followTrajectory(toStackFromHighPole);
         //drive.followTrajectory(toCones1);
         linearHelpers.waitForLinears();
         sleep(900);
-        linearHelpers.closeClaw();
+        closeClaw();
         sleep(1000);
         //drive.followTrajectorySequence(wait);
         linearHelpers.setLinearHeight(700);
@@ -363,6 +363,12 @@ public class ChampAutoFastPhalanges extends LinearOpMode {
         linears.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // 3 below
         linears.setPower(0.7);
+    }
+    public void closeClaw() {
+        drive.claw.setPosition(1);
+    }
+    public void openClaw() {
+        drive.claw.setPosition(0);
     }
 
 //    public void linearsMoveAuto (double targetPos){
