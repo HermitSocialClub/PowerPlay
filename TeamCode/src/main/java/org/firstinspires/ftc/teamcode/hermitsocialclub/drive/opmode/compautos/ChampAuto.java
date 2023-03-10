@@ -65,6 +65,11 @@ public class ChampAuto extends LinearOpMode {
                 .splineToSplineHeading(new Pose2d(60.75,15.5,m(3)),m(0))
                 .build();
 
+        Trajectory toStackFromHighPole2 = drive.trajectoryBuilder(toFirstPole.end(), m(90))
+                .splineToSplineHeading(new Pose2d(50, 12.5, m(0)), m(-5))
+                .splineToSplineHeading(new Pose2d(60.75,17,m(0)),m(0))
+                .build();
+
         Trajectory toMediumJunctionFromStack = drive.trajectoryBuilder(toStackFromHighPole.end())
                 .splineToSplineHeading(new Pose2d(40,11,m(70)),m(0))
                 .splineToSplineHeading(new Pose2d(34,18,m(135)),m(-70))
@@ -80,7 +85,7 @@ public class ChampAuto extends LinearOpMode {
                         .addDisplacementMarker(1,()->{
                             linearHelpers.setLinearHeight(2170);
                         })
-                        .splineToSplineHeading(new Pose2d(34.25,7.75,m(-135)),m(-150))
+                        .splineToSplineHeading(new Pose2d(34.25,6.25,m(-135)),m(-150))
                         .build();
 
       /*  TrajectorySequence leftPark = drive.trajectorySequenceBuilder(toFirstPole.end())
@@ -118,7 +123,8 @@ public class ChampAuto extends LinearOpMode {
         drive.claw.setPosition(0);
         sleep(500);
          linearHelpers.setLinearHeight (350);  // approx 55 ticks per inch
-        drive.followTrajectory(toStackFromHighPole);
+       drive.followTrajectory(toStackFromHighPole);
+       // drive.followTrajectory(toMediumJunctionFromStack);
         sleep(500);
        // linearHelpers.closeClaw();
         drive.claw.setPosition(1);
@@ -129,16 +135,18 @@ public class ChampAuto extends LinearOpMode {
         linearHelpers.setLinearHeight(1000);
         drive.claw.setPosition(0);
      //   linearHelpers.openClaw();
-//        sleep(500);
-//        linearHelpers.setLinearHeight(280);
-//        drive.followTrajectory(toStackFromHighPole);
-//        sleep(500);
+        sleep(500);
+        linearHelpers.setLinearHeight(270);
+        drive.followTrajectory(toStackFromHighPole2);
+        sleep(600);
+        drive.claw.setPosition(1);
 //        linearHelpers.closeClaw();
-//        sleep(500);
-//        linearHelpers.setLinearHeight(700);
-//        sleep(500);
-//        drive.followTrajectory(backToJunction);
-//        linearHelpers.setLinearHeight(1000);
+        sleep(700);
+        linearHelpers.setLinearHeight(650);
+         sleep(500);
+        drive.followTrajectory(backToJunction);
+        linearHelpers.setLinearHeight(1000);
+        drive.claw.setPosition(0);
        // linearHelpers.openClaw();
         linearHelpers.setLinearHeight(0);
 
@@ -147,11 +155,11 @@ public class ChampAuto extends LinearOpMode {
            // drive.followTrajectorySequence(leftPark);
             drive.followTrajectory(toStackFromHighPole);
 //
-//            telemetry.addData("tag null or left", vision.tagOfInterest.id);
+            telemetry.addData("tag null or left", vision.tagOfInterest.id);
 //
         } else if (vision.tagOfInterest.id == vision.MIDDLE) {
 
-          //  drive.followTrajectorySequence(middlePark);
+//            drive.followTrajectorySequence(middlePark);
 //            telemetry.addData("tag middle", vision.tagOfInterest.id);
             drive.followTrajectory(toMiddlePark);
 //
@@ -159,7 +167,7 @@ public class ChampAuto extends LinearOpMode {
 //
         //    drive.followTrajectorySequence(rightPark);
 //
-//            telemetry.addData("tag of interest right", vision.tagOfInterest.id);
+            telemetry.addData("tag of interest right", vision.tagOfInterest.id);
 //
             drive.followTrajectory(toRightPark);
         }
