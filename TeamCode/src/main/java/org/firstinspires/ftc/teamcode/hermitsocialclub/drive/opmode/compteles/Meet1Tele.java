@@ -119,40 +119,40 @@ public class Meet1Tele extends LinearOpMode {
 
 
             lastAMash = gamepad1.b;
-            if (gamepad1.x) {
-                lockedStrafe = !lockedStrafe;
-                telemetry.speak("locked mode is " + (lockedStrafe ? "ON" : "OFF"));
-                telemetry.addLine("locked mode is " + (lockedStrafe ? "ON" : "OFF"));
-            }
-            if (!lockedStrafe) {
+//            if (gamepad1.x) {
+//                lockedStrafe = !lockedStrafe;
+//                telemetry.speak("locked mode is " + (lockedStrafe ? "ON" : "OFF"));
+//                telemetry.addLine("locked mode is " + (lockedStrafe ? "ON" : "OFF"));
+//            }
+//            if (!lockedStrafe) {
                 drive.setWeightedDrivePower(
                         new Pose2d(
-                                -(((Math.abs(gamepad1.left_stick_y) < .2) ? 0 : gamepad1.left_stick_y - .2) / .8) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4),
-                                -(((Math.abs(gamepad1.left_stick_x) < .2) ? 0 : gamepad1.left_stick_x - .2) / .8) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4),
-                                -(((Math.abs(gamepad1.right_stick_x) < .2) ? 0 : gamepad1.right_stick_x - .2) / .8) * 0.7 * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4)
+                                -(((Math.abs(gamepad1.left_stick_y) < .2) ? 0 : gamepad1.left_stick_y) / .72) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4),
+                                -(((Math.abs(gamepad1.left_stick_x) < .2) ? 0 : gamepad1.left_stick_x) / .72) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4),
+                                -(((Math.abs(gamepad1.right_stick_x) < .2) ? 0 : gamepad1.right_stick_x) / .72) * 0.7 * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4)
                         )
                 );
-            }
-            else {
-                if (Math.abs(gamepad1.left_stick_y) <= Math.abs(gamepad1.left_stick_x)) {
-                    drive.setWeightedDrivePower(
-                            new Pose2d(
-                                0,
-                                    -(((Math.abs(gamepad1.left_stick_x) < .2) ? 0 : gamepad1.left_stick_x - .2) / .8) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4),
-                                    -(((Math.abs(gamepad1.right_stick_x) < .2) ? 0 : gamepad1.right_stick_x - .2) / .8) * 0.5 * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4)
-                            )
-                    );
-                }
-                else{
-                    drive.setWeightedDrivePower(
-                            new Pose2d(
-                                    -(((Math.abs(gamepad1.left_stick_y) < .2) ? 0 : gamepad1.left_stick_y - .2) / .8) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4),
-                                    0,
-                                    -(((Math.abs(gamepad1.right_stick_x) < .2) ? 0 : gamepad1.right_stick_x - .2) / .8) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4)
-                            )
-                    );
-                }
-            }
+//            }
+//            else {
+//                if (Math.abs(gamepad1.left_stick_y) <= Math.abs(gamepad1.left_stick_x)) {
+//                    drive.setWeightedDrivePower(
+//                            new Pose2d(
+//                                0,
+//                                    -(((Math.abs(gamepad1.left_stick_x) < .2) ? 0 : gamepad1.left_stick_x - .2) / .8) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4),
+//                                    -(((Math.abs(gamepad1.right_stick_x) < .2) ? 0 : gamepad1.right_stick_x - .2) / .8) * 0.5 * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4)
+//                            )
+//                    );
+//                }
+//                else{
+//                    drive.setWeightedDrivePower(
+//                            new Pose2d(
+//                                    -(((Math.abs(gamepad1.left_stick_y) < .2) ? 0 : gamepad1.left_stick_y - .2) / .8) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4),
+//                                    0,
+//                                    -(((Math.abs(gamepad1.right_stick_x) < .2) ? 0 : gamepad1.right_stick_x - .2) / .8) * (gamepad1.right_trigger > 0.05 ? 0.8 : 0.4)
+//                            )
+//                    );
+//                }
+//            }
             // Read pose
             Pose2d poseEstimate = drive.getPoseEstimate();
 

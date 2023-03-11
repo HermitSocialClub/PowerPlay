@@ -67,7 +67,7 @@ public class ChampAuto extends LinearOpMode {
 
         Trajectory toStackFromHighPole2 = drive.trajectoryBuilder(toFirstPole.end(), m(90))
                 .splineToSplineHeading(new Pose2d(50, 12.5, m(0)), m(-5))
-                .splineToSplineHeading(new Pose2d(60.75,17,m(0)),m(0))
+                .splineToSplineHeading(new Pose2d(60.5,17,m(0)),m(0))
                 .build();
 
         Trajectory toMediumJunctionFromStack = drive.trajectoryBuilder(toStackFromHighPole.end())
@@ -81,9 +81,9 @@ public class ChampAuto extends LinearOpMode {
 
                 Trajectory backToJunction = drive.trajectoryBuilder(toStackFromHighPole.end())
                         .back(1)
-                        .splineToSplineHeading(new Pose2d(43,14,m(-90)),m(0))
+                        .splineToSplineHeading(new Pose2d(43,14,m(-100)),m(0))
                         .addDisplacementMarker(1,()->{
-                            linearHelpers.setLinearHeight(2170);
+                            linearsMoveAuto(4000);
                         })
                         .splineToSplineHeading(new Pose2d(34.25,6.25,m(-135)),m(-150))
                         .build();
@@ -102,6 +102,8 @@ public class ChampAuto extends LinearOpMode {
                 .turn(Math.toRadians(135))
                 .back(10)
                 .build(); */
+//        TrajectorySequence smallPole = drive.trajectorySequenceBuilder(backToJunction.end())
+//                .back()
         Trajectory toMiddlePark = drive.trajectoryBuilder(toFirstPole.end())
                 .splineToSplineHeading(new Pose2d(34.25,25,m(-90)),m(-90))
                 .build();
@@ -115,7 +117,7 @@ public class ChampAuto extends LinearOpMode {
         if(isStopRequested()) return;
 
         //linearHelpers.closeClaw();
-        drive.claw.setPosition(1);
+        drive.claw.setPosition(1); //claw opens
         sleep(1000);
         drive.followTrajectory(toFirstPole);
         linearHelpers.setLinearHeight(1000);
@@ -141,14 +143,27 @@ public class ChampAuto extends LinearOpMode {
         sleep(600);
         drive.claw.setPosition(1);
 //        linearHelpers.closeClaw();
-        sleep(700);
+        sleep(600);
         linearHelpers.setLinearHeight(650);
          sleep(500);
+        drive.followTrajectory(backToJunction);
+        linearHelpers.setLinearHeight(1000);
+        sleep(500);
+        drive.claw.setPosition(0);
+        linearHelpers.setLinearHeight(180);
+        drive.followTrajectory(toStackFromHighPole2);
+        sleep(600);
+        drive.claw.setPosition(1);
+//        linearHelpers.closeClaw();
+        sleep(700);
+        linearHelpers.setLinearHeight(650);
+        sleep(500);
         drive.followTrajectory(backToJunction);
         linearHelpers.setLinearHeight(1000);
         drive.claw.setPosition(0);
        // linearHelpers.openClaw();
         linearHelpers.setLinearHeight(0);
+
 
         if (vision.tagOfInterest == null || vision.tagOfInterest.id == vision.LEFT) {
 
